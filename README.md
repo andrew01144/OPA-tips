@@ -40,7 +40,7 @@ Test the bandwidth and latency for all nodes using MVAPICH2 and deviation. The d
 ```
 source /usr/mpi/gcc/mvapich2-*-hfi/bin/mpivars.sh
 cd /usr/mpi/gcc/mvapich2-*-hfi/tests/intel
-pdsh -w node[01-16] -N -R exec echo %h > /tmp/mpi_hosts
+pdsh -w node[01-16] -N -R exec echo %h | sort > /tmp/mpi_hosts
 mpirun -hostfile /tmp/mpi_hosts ./deviation
 ```
 
@@ -75,10 +75,11 @@ source /usr/mpi/gcc/openmpi-*-hfi/bin/mpivars.sh
 cd /usr/mpi/gcc/openmpi-*-hfi/tests/osu-micro-benchmarks-*/mpi/pt2pt
 mpirun --allow-run-as-root --host node01,node02 ./osu_latency
 mpirun --allow-run-as-root --host node01,node02 ./osu_bw
-pdsh -w node[01-16] -N -R exec echo %h > /tmp/mpi_hosts
+pdsh -w node[01-16] -N -R exec echo %h | sort > /tmp/mpi_hosts
 mpirun --allow-run-as-root --npernode 1 --hostfile /tmp/mpi_hosts ./deviation
 ```
 ## TBD
+- Download the software: From www.cornelisnetworks.com, hover over 'Support', select 'Customer Center'. You may need to create an account. Go to the 'Release Library' and select 'Relase: Latest Release', 'Product: Omni-Path Software (Including Omni-Path Host Fabric Interface Driver', 'Operating System: RHEL 8.3'. Now select "Cornelis Omni-Path IFS Software - RHEL 8.3 - Release 10.11.0.0" and it will download the file: IntelOPA-IFS.RHEL82-x86_64.10.11.0.0.577.tgz.
 - Build and run OpenMPI
 - Run IMB and IntelMPI
 - Setup and test Advanced IP
