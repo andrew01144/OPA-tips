@@ -78,6 +78,9 @@ Fabric-based commands
 ```opaextractlids -q -F nodetype:SW``` List the switches on the fabric.<br>
 ```opaextractsellinks -q``` List the links in the fabric.<br>
 
+## Other docs
+[opareport Cook Book](opareport_CookBook.md)
+
 
 
 
