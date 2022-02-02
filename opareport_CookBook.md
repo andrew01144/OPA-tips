@@ -15,7 +15,7 @@ You can also use the ```opaextract*``` scripts as the basis for you own customiz
 ```opaextractlids -q -F nodetype:SW``` List the switches on the fabric.<br>
 ```opaextractsellinks -q``` List the links in the fabric.<br>
 
-## Look for cabling problems
+## Looking for cabling problems
 
 ### Example: Look for links with errors
 ```
@@ -42,7 +42,7 @@ opaextractperf | cut -d \; -f 1,2,3,24
 Look inside the ```opaextractperf``` script.
 You will see that it runs ```opareport``` with xml output (```-x```), then uses ```opaxmlextract``` to select particular xml tag values to print.
 Many custom queries can be achieved by using the various the ```opaextract*``` scripts supplied,
-along with ```grep/sed/cut/sort```, or even ```awk``` and ```perl```, for filtering and formatting.
+along with ```grep```/```sed```/```cut```/```sort```, or even ```awk``` and ```perl```, for filtering and formatting.
 
 For example, this one-liner shows all links in the fabric with LinkQualityIndicator less than 5, and sorts by quality.
 ```
@@ -54,6 +54,7 @@ This is a script written in the style of ```opaextract*``` that lists all the sw
 By default, ```opareport``` only shows links and ports that are Active.
 However, I want to see all of the ports, both Active and not-Active, so I use ```-A```.
 ```
+# script: opaextractswitchports
 opareport -o comps -d 4 -A -F nodetype:SW -x $@ | \
 opaxmlextract -H -d \; -s Focus -e NodeGUID -e PortNum -e NodeType \
 -e NodeDesc -e PortState -e PhysState -e OfflineDisabledReason \
@@ -62,6 +63,7 @@ opaxmlextract -H -d \; -s Focus -e NodeGUID -e PortNum -e NodeType \
 ```
 Output
 ```
+[root@headnode ~]# ./opaextractswitchports -Qq
 0x00117501020c4d23;0;SW;Edge02;Active;LinkUp;;;;;
 0x00117501020c4d23;1;SW;Edge02;Active;LinkUp;;1m;FCI Electronics;10131941-2010LF;CN1539FA102L0145
 0x00117501020c4d23;2;SW;Edge02;Active;LinkUp;;1m;FCI Electronics;10131941-2010LF;CN1539FA102L0026
@@ -75,8 +77,8 @@ While ```opareport -o errors -o slowlinks``` will report any bad links/cables th
 or will not stay active for long enough to see them.
 This is mainly an issue with ISL cables, because if a host cable is down, then you will be aware of it from other indications.
 I decided that a port in a ‘bad state’ is a port that has a cable attached, but is not Active, and/or is generating LinkDowns.
-So, the following script might be called ```opaextractdodgyports```:
 ```
+# script: opaextractbadports
 opareport -o comps -d 5 -A -F portstate:notactive -s -M -x $@ | \
 opaxmlextract -d \; -s Focus -e NodeGUID -e PortNum -e NodeDesc \
 -e PortState -e PhysState -e OfflineDisabledReason -e LinkDowned \
@@ -98,7 +100,7 @@ but is required for this procedure. Remove reporting LinkDowns from the script i
 When run, you might see:
 ```
 [root@headnode ~]# opareport -o none -M --clearall
-[root@headnode ~]# ./opaextractdodgyports -Qq
+[root@headnode ~]# ./opaextractbadports -Qq
 NodeGUID;PortNum;NodeDesc;PortState;PhysState;OfflineDisabledReason;LinkDowned
 0x00117501ff536c5f;1;Edge01;Down;Offline;None;284018
 0x00117501ff536c5f;2;Edge01;Down;Offline;None;284017
