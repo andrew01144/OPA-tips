@@ -68,8 +68,9 @@ Output
 0x00117501020c4d23;1;SW;Edge02;Active;LinkUp;;1m;FCI Electronics;10131941-2010LF;CN1539FA102L0145
 0x00117501020c4d23;2;SW;Edge02;Active;LinkUp;;1m;FCI Electronics;10131941-2010LF;CN1539FA102L0026
 0x00117501020c4d23;3;SW;Edge02;Active;LinkUp;;1m;FCI Electronics;10131941-2010LF;CN1539FA102L0095
-0x00117501020c4d23;4;SW;Edge02;Down;Offline;No Loc Media;;;;
+0x00117501020c4d23;4;SW;Edge02;Down;Polling;;3m;FCI Electronics;10142057-4030LF;CN2049ZE304L996C
 0x00117501020c4d23;5;SW;Edge02;Down;Offline;No Loc Media;;;;
+0x00117501020c4d23;6;SW;Edge02;Down;Offline;No Loc Media;;;;
 ```
 
 ### Example: List all switch ports that appear to be in a bad state.
