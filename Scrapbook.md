@@ -1,3 +1,6 @@
+# Scrapbook
+This stuff does not have a home yet.
+
 ### Example: List all switch ports that appear to be in a bad state
 **WITH LinkDowned COUNTER**
 
@@ -40,33 +43,29 @@ NodeGUID;PortNum;NodeDesc;PortState;PhysState;OfflineDisabledReason;LinkDowned
 
 ## PortState/PhysState/OfflineDisabledReason examples
 ```
-0x00117501026777de;6;SW;em-core01 L103B;Active;LinkUp;;3m;FINISAR CORP;FCBN425QB1C03;WVR0P2M  Connected to host
-0x00117501026777de;7;SW;em-core01 L103B;Down;Training;;3m;FINISAR CORP;FCBN425QB1C03;WVR0P2E  Connected to cable
-0x00117501026777de;8;SW;em-core01 L103B;Down;Polling;;10m;FINISAR CORP;FCBN425QB1C10;WUT025E  Connected to cable
-0x00117501026777de;9;SW;em-core01 L103B;Down;Offline;No Loc Media;;;;                         No cable
-0x00117501026777de;17;SW;em-core01 L103B;Down;Offline;Disconnected;;;;                        Ports 17-24 of 16-port Leaf
-0x0011750102754934;3;SW;em-core01 S201A;Down;Offline;Not installed;;;;                        Spine port to empty Leaf slot.
-                                                                                ????          Leaf port to empty Spine slot.
+0x00117501026777de;6;SW;em-core01 L103B;Active;LinkUp;;3m;FINISAR CORP    Connected to host
+0x00117501026777de;7;SW;em-core01 L103B;Down;Training;;3m;FINISAR CORP    Connected to cable
+0x00117501026777de;8;SW;em-core01 L103B;Down;Polling;;10m;FINISAR CORP    Connected to cable
+0x00117501026777de;9;SW;em-core01 L103B;Down;Offline;No Loc Media;;       No cable
+0x00117501026777de;17;SW;em-core01 L103B;Down;Offline;Disconnected;;      Ports 17-24 of 16-port Leaf
+0x0011750102754934;3;SW;em-core01 S201A;Down;Offline;Not installed;;      Spine port to empty Leaf slot.
+                                                            ????          Leaf port to empty Spine slot.
 ```
 ```
-PortState
-	Active    - will always be LinkUp
-	Down
-PhysState
-	Offline   - this is probably ok
-	Polling   - bad
-	Training  - bad
-	?Init
-	LinkUp    - good
-	?Disabled
-OfflineDisabledReason
-	null            eg PortState: Active
-	No Loc Media    eg no cable in this port
-	Not installed   eg this Spine port goes to an empty leaf slot
-	Disconnected    eg ports 17-24 on a 16-port leaf
-	None            eg ?? PortState: Down, PhysState: Offline. But many with this state don't say 'None'
+PortState           PhysState               OfflineDisabledReason
 
+Active              LinkUp                  <null>
 
+Down                Offline                 None                      # initial port state
+                                            No Loc Media              # no cable in this port
+                                            Not installed             # this Spine port goes to an empty leaf slot
+                                            Disconnected              # ports 17-24 on a 16-port leaf
+                    Polling                 <null>                    # looking for neighbor
+                    Training                <null>                    # brining the link up
+        <assumed>   Init                    <null>                    # waiting for SM
+                    
+                    ??Disabled
+		    
 A bad port might cycle through:
 ;Down;Offline;None;
 ;Down;Polling;;
