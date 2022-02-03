@@ -24,15 +24,16 @@ opareport -o none -C; sleep 60; opareport -o slowlinks -o errors
 This one-liner clears the error counters (```-C```) with no output (```-o none```), then waits 60 seconds to allow for some errors to occur.
 It then runs a report that lists any links running slower than they should (```-o slowlinks```) and any links with errors (```-o errors```).
 Consider:
-- Always remember to include ```-o slowlinks``` because a bad cable may cause the link to be downgraded,
+- Always remember to include ```-o slowlinks``` because errors on a link may cause the link to be downgraded,
   and the downgraded (slower) link may no longer show any errors.
-- Think about the error thresholds which are configured in /etc/opa/opamon.conf (XXX more words needed).
+- Errors are only reported if they exceed the thresholds configured in /etc/opa/opamon.conf.
+  If you are accumulating errors over a short time (60 seconds in this example), you may want to lower the thresholds in the file.
 - Not all errors are bad. Understanding the meaning of the different error types is key to diagnosing problems.
-  A full discussion of the different error counters is beyond the scope of this document, but for some brief examples:
-  - The LinkDowned counter shows how many times the link has gone down. A bad cable could cause a link to go down occasionally, which is a problem.
-    A rebooting node will also cause the link to go down, which is not a problem.
-  - The XXX shows that errors have occured on the link. That may be a bad cable. But, can also occur when the link comes up.
-    So, if XXX is present along with LinkDowned, this may not be a problem.
+  A full discussion of the different error counters is beyond the scope of this document, but are some brief points:
+  - The LinkDowned counter shows how many times the link has gone down. A bad cable could cause a link to go down occasionally, which is a problem;
+    but a rebooting node will also cause the link to go down, and that is not a problem.
+  - XXXs show that errors have occured on the link. That may indicate a bad cable. However, errors can also occur when the link comes up.
+    So, if XXXs are present along with LinkDowned, this may not be a problem.
 
 
 ### Example: Report the LinkQualityIndicator of every active port in the fabric.
@@ -75,38 +76,38 @@ Output
 
 ### Example: List all switch ports that appear to be in a bad state.
 While ```opareport -o errors -o slowlinks``` will report any bad links/cables that are active, there may also be links that are so bad that they have not become active,
-or will not stay active for long enough to see them.
-This is mainly an issue with ISL cables, because if a host cable is down, then you will be aware of it from other indications.
-I decided that a port in a ‘bad state’ is a port that has a cable attached, but is not Active, and/or is generating LinkDowns.
+or will not stay active for long enough to report them.
+An example of a port in a bad state is a port that is not-Active but does have a cable attached.
 ```
 # script: opaextractbadports
-opareport -o comps -d 5 -A -F portstate:notactive -s -M -x $@ | \
+opareport -o comps -d 4 -A -F portstate:notactive -x $@ | \
 opaxmlextract -d \; -s Focus -e NodeGUID -e PortNum -e NodeDesc \
--e PortState -e PhysState -e OfflineDisabledReason -e LinkDowned \
+-e PortState -e PhysState -e OfflineDisabledReason \
+-e OM4Length -e VendorName \
 -s Neighbor -s SMs | \
-grep -v ';Offline;No Loc Media;'
+grep -Ev ';Offline;(No Loc Media|Not installed|Disconnected);'
 ```
-Explanation: ```opareport -o comps -d 5``` provides the information I need.
+Explanation: ```opareport -o comps -d 4``` provides the information I need.
 By default, ```opareport``` only shows links and ports that are Active; ```-A``` selects **all** ports, both Active and not-Active.
-I only want to see the not-Active ports, so I focus on them using: ```-F portstate:NotActive```.
-The LinkDowned counter can be interesting, so I add statistics with ```-s```.
-By default, ```opareport``` gets statistics (that is port counter data like LinkDowned) from the PM (performance Manager).
-However, the PM only holds statistics for Active ports, so I use ```-M``` to tell ```opareport``` to read the counters directly from the device.
-Lastly, ```-x``` causes the output to be in xml. ```opaxmlextract``` extracts the data items I need into a one line-per-port format.
-```grep -v ';Offline;No Loc Media;'``` removes the ports with no cables. (It’s fine to be not-Active if there is no cable).
-I am not interested in host ports that are not-Active, but I don’t need to filter them out, because they can’t been seen from the fabric.
-Note: Directly clearing the counters in hardware (```--clearall``` with ```-M```) is slightly disruptive to the PM and should avoided if possible,
-but is required for this procedure. Remove reporting LinkDowns from the script if you don’t want to disrupt the PM.
+I only want to see the not-Active ports, so I focus on them using: ```-F portstate:notactive```.
+```-x``` causes the output to be in xml, and ```opaxmlextract``` extracts the data items I want into a one-line-per-port format.
+
+Not all not-Active ports are not bad, so I use ```grep -v``` to remove the ports with good reasons to be not-Active. These are ports with no cable (No Loc Media), and unused internal ports in director switches (Not installed and Disconnected).
 
 When run, you might see:
 ```
-[root@headnode ~]# opareport -o none -M --clearall
 [root@headnode ~]# ./opaextractbadports -Qq
-NodeGUID;PortNum;NodeDesc;PortState;PhysState;OfflineDisabledReason;LinkDowned
-0x00117501ff536c5f;1;Edge01;Down;Offline;None;284018
-0x00117501ff536c5f;2;Edge01;Down;Offline;None;284017
-0x00117501ff536c5f;6;Edge01;Down;Polling;;0
-0x00117501ff536c5f;8;Edge01;Down;Offline;Transient;6
+NodeGUID;PortNum;NodeDesc;PortState;PhysState;OfflineDisabledReason;OM4Length;VendorName
+0x00117501020d8419;11;em-edge02;Down;Polling;;2m;Hitachi Metals
+0x00117501020d8419;12;em-edge02;Down;Polling;;2m;Hitachi Metals
+0x00117501020d8419;47;em-edge02;Down;Offline;None;3m;FINISAR CORP
+0x00117501020d841b;12;em-edge04;Down;Polling;;2m;Hitachi Metals
+0x00117501020d841b;33;em-edge04;Down;Polling;;3m;FINISAR CORP
+0x00117501020d841b;34;em-edge04;Down;Training;;3m;FINISAR CORP
+0x00117501020d841b;48;em-edge04;Down;Training;;3m;FINISAR CORP
 [root@headnode ~]# 
 ```
+As a rough guide:
+- A port with an unterminated cable will appear as ```Down;Polling```.
+- A port in an unstable state will cycle though ```Down;Offline```, ```Down;Polling```, and ```Down;Training```.
 
