@@ -28,12 +28,16 @@ Consider:
   and the downgraded (slower) link may no longer show any errors.
 - Errors are only reported if they exceed the thresholds configured in /etc/opa/opamon.conf.
   If you are accumulating errors over a short time (60 seconds in this example), you may want to lower the thresholds in the file.
+  To show every error: change ```Greater``` to ```Equal```, and set the threshold values of the counters you want to see to ```1```.
+  Set the value for ```LinkQualityIndicator``` to ```5```.
 - Not all errors are bad. Understanding the meaning of the different error types is key to diagnosing problems.
   A full discussion of the different error counters is beyond the scope of this document, but are some brief points:
-  - The LinkDowned counter shows how many times the link has gone down. A bad cable could cause a link to go down occasionally, which is a problem;
+  - The ```LinkDowned``` counter shows how many times the link has gone down. A bad cable could cause a link to go down occasionally, which is a problem;
     but a rebooting node will also cause the link to go down, and that is not a problem.
-  - XXXs show that errors have occured on the link. That may indicate a bad cable. However, errors can also occur when the link comes up.
-    So, if XXXs are present along with LinkDowned, this may not be a problem.
+  - ```LocalLinkIntegrityErrors``` counts each error that has occured on the link. A high number may indicate a bad cable.
+    However, errors can also occur when the link comes up.
+    So, if ```LocalLinkIntegrityErrors``` are present along with ```LinkDowned```, this may not be a problem.
+    Also, note that the default ```opamon.conf``` suppresses reporting ```LocalLinkIntegrityErrors```. 
 
 
 ### Example: Report the LinkQualityIndicator of every active port in the fabric.
