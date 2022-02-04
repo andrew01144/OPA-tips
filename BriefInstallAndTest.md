@@ -11,17 +11,29 @@ Prerequisites
 - A cluster of two or more Linux servers running a RHEL-like Linux distro.
 - Passwordless ssh from the headnode to all nodes.
 - Omni-Path adapters installed in each node, and cabled to an Omni-Path switch.
-- The Omni-Path host software bundle (e.g. IntelOPA-IFS.RHEL*-x86_64.\*.tgz) has been downloaded.
+- The Omni-Path host software bundle (e.g. CornelisOPX-OPXS.RHEL*-x86_64.*.tgz ) has been downloaded.
 - Optional/Recommended: pdsh has been installed on the headnode ```yum install pdsh```.
 
 Install the Omni-Path host stack on each node:
 ```
 cd
-tar xf /tmp/IntelOPA-IFS.RHEL*-x86_64.*.tgz
-cd IntelOPA-IFS*
+tar xf /tmp/CornelisOPX-OPXS.RHEL*-x86_64.*.tgz
+cd CornelisOPX*
 ./INSTALL -a
 ```
 At this point, you may want to setup the IP-over-Fabric settings (also known as IPoIB). Do this in the same way as for any other network interface by creating a ```/etc/sysconfig/network-scripts/ifcfg-ib0``` file, typically with a static IP address.
+```
+# /etc/sysconfig/network-scripts/ifcfg-ib0
+DEVICE=ib0
+TYPE='InfiniBand'
+BOOTPROTO=static
+IPADDR=192.168.101.1
+BROADCAST=192.168.101.255
+NETWORK=192.168.101.0
+NETMASK=255.255.255.0
+ONBOOT=yes
+#CONNECTED_MODE=yes
+```
 ```
 reboot
 ```
@@ -35,14 +47,14 @@ Check that the fabric is up and that the correct number of hosts and switches ar
 opafabricinfo
 ```
 ## Measure the MPI latency and bandwidth
-Test the bandwidth and latency between a pair of nodes using MVAPICH2 and the OSU micro-benchmarks. These are provided pre-compiled with the IntelOPA software bundle.
+Test the bandwidth and latency between a pair of nodes using MVAPICH2 and the OSU micro-benchmarks. These are provided pre-compiled with the CornelisOPX software bundle.
 ```
 source /usr/mpi/gcc/mvapich2-*-hfi/bin/mpivars.sh
 cd /usr/mpi/gcc/mvapich2-*-hfi/tests/osu-micro*/mpi/pt2pt
 mpirun -hosts node01,node02 ./osu_latency
 mpirun -hosts node01,node02 ./osu_bw
 ```
-Test the bandwidth and latency for all nodes using MVAPICH2 and deviation. The deviation program is provided pre-compiled with the IntelOPA software bundle.
+Test the bandwidth and latency for all nodes using MVAPICH2 and deviation. The deviation program is provided pre-compiled with the CornelisOPX software bundle.
 ```
 source /usr/mpi/gcc/mvapich2-*-hfi/bin/mpivars.sh
 cd /usr/mpi/gcc/mvapich2-*-hfi/tests/intel
