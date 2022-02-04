@@ -62,7 +62,7 @@ mpirun --allow-run-as-root --npernode 1 --hostfile /tmp/mpi_hosts ./deviation
 ### Systems with multiple HFIs
 Application traffic can be assigned or spread across multiple adapters according to rules set by the environment variable ```PSM2_MULTIRAIL```.
 This is a complex topic fully described in the Omni-Path Multirail Application Note (link to be provided).
-For simple testing, it is easiest to measure the performance of one HFI at a time. You can direct PSM2 to use a specifc HFI with the HFI_UNIT environment variable. Here is the syntax for specifying the environment variable in the mpirun command. HFI_UNIT numbers from 0 to 3.
+For simple testing, it is easiest to measure the performance of one HFI at a time. You can direct PSM2 to use a specifc HFI with the ```HFI_UNIT``` environment variable. Here is the syntax for specifying the environment variable in the mpirun command. ```HFI_UNIT``` numbers from 0 to 3.
 ```
 # MVAPICH2
 mpirun -hosts node01,node02 -genv HFI_UNIT 0 ./osu_bw
