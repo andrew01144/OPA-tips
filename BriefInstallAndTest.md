@@ -64,10 +64,11 @@ mpirun -hostfile /tmp/mpi_hosts ./deviation
 Alternative, using OpenMPI
 ```
 source /usr/mpi/gcc/openmpi-*-hfi/bin/mpivars.sh
-cd /usr/mpi/gcc/openmpi-*-hfi/tests/osu-micro-benchmarks-*/mpi/pt2pt
+cd $MPI_ROOT/tests/osu-*/mpi/pt2pt
 mpirun --allow-run-as-root --host node01,node02 ./osu_latency
 mpirun --allow-run-as-root --host node01,node02 ./osu_bw
 pdsh -w node[01-16] -N -R exec echo %h | sort > /tmp/mpi_hosts
+cd $MPI_ROOT/tests/intel
 mpirun --allow-run-as-root --npernode 1 --hostfile /tmp/mpi_hosts ./deviation
 ```
 
