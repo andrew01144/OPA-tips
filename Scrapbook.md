@@ -1,5 +1,25 @@
 # Scrapbook
 This stuff does not have a home yet.
+---
+### Install and Test for GPU systems
+With multiple GPUs and multiple HFIs, how to you control where the mpi ranks run?
+```
+# Follow: Intel_OP_Fabric_Software_IG_H76467_v20_0.pdf, 3.4 Download and Install NVIDIA* Software (Optional)
+# Download and install cuda from NVIDIA site
+# Test: rpm -qa | grep psm | grep cuda
+
+./INSTALL -a -G
+
+source /usr/mpi/gcc/openmpi-*-cuda-hfi/bin/mpivars.sh
+cd $MPI_ROOT/tests/osu-*/mpi/pt2pt
+mpirun --allow-run-as-root -np 2 -host node01,node02 -x PSM2_CUDA=1 ./osu_latency D D
+mpirun --allow-run-as-root -np 2 -host node01,node02 -x PSM2_CUDA=1 ./osu_bw D D
+pdsh -w node[01-16] -N -R exec echo %h | sort > /tmp/mpi_hosts
+cd $MPI_ROOT/tests/intel
+#?# mpirun --allow-run-as-root --npernode 1 --hostfile /tmp/mpi_hosts -x PSM2_CUDA=1 ./deviation
+```
+---
+
 
 ### Example: List all switch ports that appear to be in a bad state
 **WITH LinkDowned COUNTER**
@@ -54,17 +74,17 @@ NodeGUID;PortNum;NodeDesc;PortState;PhysState;OfflineDisabledReason;LinkDowned
 ```
 PortState           PhysState               OfflineDisabledReason
 
-Active              LinkUp                  <null>
+Active              LinkUp                  <blank>
 
 Down                Offline                 None                      # initial port state
                                             No Loc Media              # no cable in this port
-                                            Not installed             # this Spine port goes to an empty leaf slot
-                                            Disconnected              # ports 17-24 on a 16-port leaf
-                    Polling                 <null>                    # looking for neighbor
-                    Training                <null>                    # brining the link up
-        <assumed>   Init                    <null>                    # waiting for SM
+                                            Not installed             # [Directors] this Spine port goes to an empty leaf slot
+                                            Disconnected              # [Directors] ports 17-24 on a 16-port leaf
+                    Disabled                SMA disabled              # disabled using opaportconfig -l <lid> -m <port>
+		    Polling                 <blank>                   # looking for neighbor
+                    Training                <blank>                   # bringing the link up
+        <assumed>   Init                    <blank>                   # waiting for SM
                     
-                    ??Disabled
 		    
 A bad port might cycle through:
 ;Down;Offline;None;
