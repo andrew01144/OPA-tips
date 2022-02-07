@@ -4,14 +4,14 @@ An Omni-Path fabric is made up of three types of component:
 - HFIs (Host Fabric Interfaces, or Adapters), typically installed in Linux hosts.
 - Switches
 - Links. These are normally cables, and can be:
-  - HFI Links, cables from a switch to a host.
-  - ISLs (Inter-Switch Links), cables between switches. Or, in the case of a director switch, the internal links between Leafs and Spines.
+  - HFI Links; cables from a switch to a host.
+  - ISLs (Inter-Switch Links); cables between switches. Or, in the case of a director switch, the internal links between Leafs and Spines.
 
 This document describes some of the commands that can be used to determine how the components in a fabric are interconnected.
 
-The ```opaextract*``` scripts (e.g. ```opaextractlids```, ```opaextractperf```) are very useful for exploring the fabric.
+The ```opaextract*``` scripts (```opaextractlids```, ```opaextractperf```, etc.) installed with the Omni-Path host software are very useful for exploring the fabric.
 These scripts call ```opareport``` in a form that produces xml output from which certain tags (or data fields) are extracted.
-They are often more convenient to use than ```opareport``` because their output is line-oriented and can be sorted and filtered more easily.
+They are often more convenient to use than calling ```opareport``` directly because their output is line-oriented and can be filtered and sorted more easily.
 You can also use the ```opaextract*``` scripts as the basis for you own customized scripts.
 
 ---
@@ -25,9 +25,9 @@ You can also use the ```opaextract*``` scripts as the basis for you own customiz
 
 The basic commands can be filtered to answer typical questions:
 
-```opaextractsellinks -q | grep cn01``` What switch and port is host cn01 connected to?<br>
+```opaextractsellinks -q | grep cn015``` What switch and port is host cn015 connected to?<br>
 ```opaextractsellinks -q | grep 'SW.*SW'``` Show all the ISLs (Inter-Switch Links).<br>
-```opaextractsellinks -q | grep -v 'SW.*SW' | grep Edge01``` What hosts are connected to Edge01? (remove the ISLs).<br>
+```opaextractsellinks -q | grep -v 'SW.*SW' | grep Edge01``` What hosts are connected to Edge01? (All the links except ISLs).<br>
 
 ---
 ### Example: Count the ISLs on each edge switch
@@ -86,7 +86,7 @@ This method can also be used to take bad links out of service, by using ```opapo
 
 # What is the switch's LID? I will need this for the opaportconfig command.
 [root@em101 ~]# opaextractlids -q -F nodetype:SW | grep em-edge01
-0x00117501020d8282;0;SW;em-edge01;0x0002                                    # lid 0x02
+0x00117501020d8282;0;SW;em-edge01;0x0002                                    # LID = 0x02
 
 # How many LinkDowneds are currently recorded for em102's switch port?
 [root@em101 ~]# opaextracterror -Qq -F nodepat:em-edge01:port:16 | cut -d \; -f 1,3,14
@@ -94,7 +94,7 @@ NodeDesc;PortNum;LinkDowned
 em-edge01;16;9                                                               # LinkDowned = 9
 
 # Bounce em102's switch port
-[root@em101 ~]# opaportconfig -l 0x02 -m 16 bounce; sleep 15
+[root@em101 ~]# opaportconfig -l 0x02 -m 16 bounce
 Bouncing Port at LID 0x00000002 Port 16 via local port 1 (0x00117501017a99ec) on HFI 1 (hfi1_0)
 
 # Wait 15 seconds, then query LinkDowned again:
@@ -124,6 +124,9 @@ em-edge01;16;0                                                               # L
 ```
 
 ---
+---
+---
+
 
 
 ## Looking for cabling problems
@@ -132,8 +135,8 @@ em-edge01;16;0                                                               # L
 ```
 opareport -o none -C; sleep 60; opareport -o slowlinks -o errors
 ```
-This one-liner clears the error counters (```-C```) with no output (```-o none```), then waits 60 seconds to allow for some errors to occur.
-It then runs a report that lists any links running slower than they should (```-o slowlinks```) and any links with errors (```-o errors```).
+This one-liner clears the error counters ```-C``` with no output ```-o none```, then waits 60 seconds to allow for some errors to occur.
+It then runs a report that lists any links running slower than they should ```-o slowlinks``` and any links with errors ```-o errors```.
 Consider:
 - Always remember to include ```-o slowlinks``` because errors on a link may cause the link to be downgraded,
   and the downgraded (slower) link may no longer show any errors.
@@ -141,8 +144,8 @@ Consider:
   If you are accumulating errors over a short time (60 seconds in this example), you may want to lower the thresholds in the file.
   To show every error: change ```Greater``` to ```Equal```, and set the threshold values of the counters you want to see to ```1```.
   Set the value for ```LinkQualityIndicator``` to ```5```.
-- Not all errors are bad. Understanding the meaning of the different error types is key to diagnosing problems.
-  A full discussion of the different error counters is beyond the scope of this document, but are some brief points:
+- Not all errors are bad. Understanding the meaning of the different error types and the context in which they have occurred is key to diagnosing problems.
+  A full discussion of the different error counters is beyond the scope of this document, but here are some brief points:
   - The ```LinkDowned``` counter shows how many times the link has gone down. A bad cable could cause a link to go down occasionally, which is a problem;
     but a rebooting node will also cause the link to go down, and that is not a problem.
   - ```LocalLinkIntegrityErrors``` counts each error that has occured on the link. A high number may indicate a bad cable.
@@ -156,7 +159,7 @@ Consider:
 opaextractperf | cut -d \; -f 1,2,3,24
 ```
 Look inside the ```opaextractperf``` script.
-You will see that it runs ```opareport``` with xml output (```-x```), then uses ```opaxmlextract``` to select particular xml tag values to print.
+You will see that it runs ```opareport``` with xml output ```-x```, then uses ```opaxmlextract``` to select particular xml tag values to print.
 Many custom queries can be achieved by using the various the ```opaextract*``` scripts supplied,
 along with ```grep```/```sed```/```cut```/```sort```, or even ```awk``` and ```perl```, for filtering and formatting.
 
