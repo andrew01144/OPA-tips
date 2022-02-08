@@ -11,7 +11,7 @@ Prerequisites
 - A cluster of two or more Linux servers running a RHEL-like Linux distro.
 - Passwordless ssh from the headnode to all nodes.
 - Omni-Path adapters installed in each node, and cabled to an Omni-Path switch.
-- The Omni-Path host software bundle (e.g. CornelisOPX-OPXS.RHEL*-x86_64.*.tgz ) has been downloaded.
+- The Omni-Path host software bundle (e.g. CornelisOPX-OPXS.RHEL\*-x86_64.\*.tgz ) [has been downloaded](Download.md).
 - Optional/Recommended: pdsh has been installed on the headnode ```yum install pdsh```.
 
 Install the Omni-Path host stack on each node:
