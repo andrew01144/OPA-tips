@@ -21,7 +21,7 @@ tar xf /tmp/CornelisOPX-OPXS.RHEL*-x86_64.*.tgz
 cd CornelisOPX*
 ./INSTALL -a
 ```
-At this point, you may want to setup the IP-over-Fabric settings (also known as IPoIB). Do this in the same way as for any other network interface by creating a ```/etc/sysconfig/network-scripts/ifcfg-ib0``` file, typically with a static IP address.
+At this point, you may want to setup the IP-over-Fabric settings (also known as IPoIB). This is usual, but optional, and not required for the following MPI tests. Do this in the same way as for any other network interface by creating a ```/etc/sysconfig/network-scripts/ifcfg-ib0``` file, typically with a static IP address.
 ```
 # /etc/sysconfig/network-scripts/ifcfg-ib0
 DEVICE=ib0
