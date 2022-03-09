@@ -75,7 +75,7 @@ create /home/cornelis/openmpi-4.1.1-psm2/bin/mpivars.sh:
   export LD_LIBRARY_PATH=$MPI_ROOT/lib64${LD_LIBRARY_PATH:+:}${LD_LIBRARY_PATH}
   export MANPATH=$MPI_ROOT/share/man:${MANPATH}
 ```
-*```--prefix=/home/cornelis/openmpi-4.1.1-psm2``` causes ```make install``` to create this directory and install all the components into it.*
+*Note: ```--prefix=/home/cornelis/openmpi-4.1.1-psm2``` causes ```make install``` to create this directory and install all the components into it.*
 
 Second, download and build the OSU microbenchmarks.
 ```
