@@ -1,11 +1,12 @@
 # WORK IN PROGRESS - DO NOT USE THIS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ## questions:
 - is opa-address-resolution useful for anything?
+- OMPI error: "There was an error initializing an OpenFabrics device". Use --mca btl ^openib or configure --without-openib
 - is reboot required between opa-basic-tools and the other packages?
-- is the OpenMPI tree relocatable?
-- does OpenMPI ```make install``` write anywhere outside of -prefix?
-- how to download and install osu microbenchmarks?
+- is the OpenMPI tree relocatable? Initial look: inconclusive.
 - summarize differences between tarball and in-distro installs.
+- run deviation?
+- say something about shared /home/cornelis, or copy to the other machine.
 
 # Setting up an Omni-Path fabric for evaluation
 This document is a cheat-sheet for some Cornelis Omni-Path admin commands and procedures; it does not cover switch management.
@@ -60,34 +61,39 @@ Optionally, install the hfa1 commands from the Cornelis software bundle.
 rpm -Uvh /tmp/CornelisOPX-OPXS.RHEL*-x86_64.*/repos/OPA_PKGS/RPMS/hfi1-diagtools-sw-0.8-117.x86_64.rpm
 ```
 ## Measure the MPI latency and bandwidth
-First, download and build OpenMPI and the OSU microbenchmarks
+First, download and build OpenMPI.
 ```
+cd
 wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.1.tar.gz
 tar xf openmpi-4.1.1.tar.gz
-cd openmpi-4.1.1/
+cd openmpi-4.1.1
 ./configure --prefix=/home/cornelis/openmpi-4.1.1-psm2 --with-psm2
-make
-make install
-cd
+make all install
 create /home/cornelis/openmpi-4.1.1-psm2/bin/mpivars.sh:
   export MPI_ROOT=/home/cornelis/openmpi-4.1.1-psm2
   export PATH=$MPI_ROOT/bin:${PATH}
   export LD_LIBRARY_PATH=$MPI_ROOT/lib64${LD_LIBRARY_PATH:+:}${LD_LIBRARY_PATH}
   export MANPATH=$MPI_ROOT/share/man:${MANPATH}
 ```
+*```--prefix=/home/cornelis/openmpi-4.1.1-psm2``` causes ```make install``` to create this directory and install all the components into it.*
+
+Second, download and build the OSU microbenchmarks.
 ```
-wget osu stuff
-make/build
+cd
+wget https://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-5.9.tar.gz
+tar xf osu-micro-benchmarks-5.9.tar.gz
+cd osu-micro-benchmarks-5.9
+source /home/cornelis/openmpi-4.1.1-psm2/bin/mpivars.sh
+./configure CC=$MPI_ROOT/bin/mpicc CXX=$MPI_ROOT/bin/mpicxx
+make
 ```
-Test the bandwidth and latency between a pair of nodes using OpenMPI and the OSU micro-benchmarks.
+Now, test the bandwidth and latency between a pair of nodes using OpenMPI and the OSU micro-benchmarks.
 ```
-source xx/mpivars.sh
-cd xx/tests/osu-*/mpi/pt2pt
-mpirun --allow-run-as-root --host node01,node02 ./osu_latency
-mpirun --allow-run-as-root --host node01,node02 ./osu_bw
-pdsh -w node[01-16] -N -R exec echo %h | sort > /tmp/mpi_hosts
-cd $MPI_ROOT/tests/intel
-mpirun --allow-run-as-root --npernode 1 --hostfile /tmp/mpi_hosts ./deviation
+cd
+cd osu-micro-benchmarks-5.9/mpi/pt2pt
+source /home/cornelis/openmpi-4.1.1-psm2/bin/mpivars.sh
+mpirun --allow-run-as-root --mca btl ^openib --host node01,node02 ./osu_latency
+mpirun --allow-run-as-root --mca btl ^openib --host node01,node02 ./osu_bw
 ```
 
 ### Systems with multiple HFIs
