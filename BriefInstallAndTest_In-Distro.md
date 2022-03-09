@@ -1,5 +1,5 @@
-# WORK IN PROGRESS - DO NOT USE THIS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-## questions:
+# WORK IN PROGRESS - DO NOT USE YET !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+## Questions:
 - is opa-address-resolution useful for anything?
 - OMPI error: "There was an error initializing an OpenFabrics device". Use --mca btl ^openib or configure --without-openib
 - is reboot required between opa-basic-tools and the other packages?
@@ -7,13 +7,12 @@
 - summarize differences between tarball and in-distro installs.
 - run deviation?
 - say something about shared /home/cornelis, or copy to the other machine.
+---
 
 # Setting up an Omni-Path fabric for evaluation
-This document is a cheat-sheet for some Cornelis Omni-Path admin commands and procedures; it does not cover switch management.
-
 This procedure is suitable for the installation of small clusters and evaluation projects. It would need to be adjusted for use in a production environment using a Cluster Management system.
 
-In general, Omni-Path switches can be used in their out-of-box state. Some configuration and firmware updates should be done for a production environment, but are usually unecessary for small evaluation systems. Managing switches will be covered in a separate document.
+**Omni-Path Switches:** In general, Omni-Path switches can be used in their out-of-box state. Some configuration and firmware updates should be done for a production environment, but are usually unecessary for small evaluation systems. Managing switches will be covered in a separate document.
 
 ## Installation
 
@@ -21,12 +20,10 @@ Prerequisites
 - A cluster of two or more Linux servers running a RHEL-like Linux distro.
 - Passwordless ssh from the headnode to all nodes.
 - Omni-Path adapters installed in each node, and cabled to an Omni-Path switch.
-- The Omni-Path host software bundle (e.g. CornelisOPX-OPXS.RHEL\*-x86_64.\*.tgz ) [has been downloaded](Download.md).
 - Optional/Recommended: pdsh has been installed on the headnode ```yum install pdsh```.
 
-Install the Omni-Path host stack on each node:
+On each node, install the Omni-Path host stack:
 ```
-cd
 yum install -y opa-basic-tools
 reboot
 yum intsall -y rdma-core libpsm2 opa-fastfabric opa-address-resolution opa-fm
@@ -61,9 +58,11 @@ Optionally, install the hfa1 commands from the Cornelis software bundle.
 rpm -Uvh /tmp/CornelisOPX-OPXS.RHEL*-x86_64.*/repos/OPA_PKGS/RPMS/hfi1-diagtools-sw-0.8-117.x86_64.rpm
 ```
 ## Measure the MPI latency and bandwidth
+We will build and run OpenMPI and the OSU microbenchmarks in our home directory. This can be done as root, but is best done as a normal user. On this system, my home directory is ```/home/cornelis```, and is shared across all the nodes. If this is not shared on your system, then you can copy the required files to the other systems.
+
 First, download and build OpenMPI.
 ```
-cd
+cd /home/cornelis
 wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.1.tar.gz
 tar xf openmpi-4.1.1.tar.gz
 cd openmpi-4.1.1
@@ -79,7 +78,7 @@ create /home/cornelis/openmpi-4.1.1-psm2/bin/mpivars.sh:
 
 Second, download and build the OSU microbenchmarks.
 ```
-cd
+cd /home/cornelis
 wget https://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-5.9.tar.gz
 tar xf osu-micro-benchmarks-5.9.tar.gz
 cd osu-micro-benchmarks-5.9
@@ -87,11 +86,16 @@ source /home/cornelis/openmpi-4.1.1-psm2/bin/mpivars.sh
 ./configure CC=$MPI_ROOT/bin/mpicc CXX=$MPI_ROOT/bin/mpicxx
 make
 ```
-Now, test the bandwidth and latency between a pair of nodes using OpenMPI and the OSU micro-benchmarks.
+If your home directory is not shared, then copy the required directories to the other node(s):
 ```
-cd
-cd osu-micro-benchmarks-5.9/mpi/pt2pt
+cd /home/cornelis
+scp -a openmpi-* osu-micro-benchmarks-* node02:/home/cornelis
+```
+Now, measure the bandwidth and latency between a pair of nodes using OpenMPI and the OSU micro-benchmarks.
+```
+cd /home/cornelis
 source /home/cornelis/openmpi-4.1.1-psm2/bin/mpivars.sh
+cd osu-micro-benchmarks-5.9/mpi/pt2pt
 mpirun --allow-run-as-root --mca btl ^openib --host node01,node02 ./osu_latency
 mpirun --allow-run-as-root --mca btl ^openib --host node01,node02 ./osu_bw
 ```
