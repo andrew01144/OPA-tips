@@ -1,20 +1,19 @@
-## Work in Progress, open questions:
-- is opa-address-resolution useful for anything?
-- is reboot required between opa-basic-tools and the other packages?
-- OMPI warning: "There was an error initializing an OpenFabrics device".
-  - Fix: Use ```mpirun --mca btl ^openib``` or ```configure --enable-mca-no-build=btl-openib```
-- is the OpenMPI tree relocatable? Initial look: inconclusive.
-- summarize differences between tarball and in-distro installs.
-  - no hfi1 commands
-  - opa admin commands can only be run by root
-  - no AIP
-- build and run deviation.c?
----
-
 # Setting up an Omni-Path fabric for evaluation
 This procedure is suitable for the installation of small clusters and evaluation projects. It would need to be adjusted for use in a production environment using a Cluster Management system.
 
 **Omni-Path Switches:** In general, Omni-Path switches can be used in their out-of-box state. Some configuration and firmware updates should be done for a production environment, but are usually unecessary for small evaluation systems. Managing switches will be covered in a separate document.
+
+> ## Work in Progress, open questions:
+> - is opa-address-resolution useful for anything?
+> - is reboot required between opa-basic-tools and the other packages?
+> - OMPI warning: "There was an error initializing an OpenFabrics device".
+>   - Fix: Use ```mpirun --mca btl ^openib``` or ```configure --enable-mca-no-build=btl-openib```
+> - is the OpenMPI tree relocatable? Initial look: inconclusive.
+> - summarize differences between tarball and in-distro installs.
+>   - no hfi1 commands
+>   - opa admin commands can only be run by root
+>   - no AIP
+> - build and run deviation.c?
 
 ## Installation
 
