@@ -1,12 +1,14 @@
-# WORK IN PROGRESS - DO NOT USE YET !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-## Questions:
+## Work in Progress, open questions:
 - is opa-address-resolution useful for anything?
-- OMPI error: "There was an error initializing an OpenFabrics device". Use --mca btl ^openib or configure --without-openib
 - is reboot required between opa-basic-tools and the other packages?
+- OMPI warning: "There was an error initializing an OpenFabrics device".
+  - Fix: Use ```mpirun --mca btl ^openib``` or ```configure --enable-mca-no-build=btl-openib```
 - is the OpenMPI tree relocatable? Initial look: inconclusive.
 - summarize differences between tarball and in-distro installs.
-- run deviation?
-- say something about shared /home/cornelis, or copy to the other machine.
+  - no hfi1 commands
+  - opa admin commands can only be run by root
+  - no AIP
+- build and run deviation.c?
 ---
 
 # Setting up an Omni-Path fabric for evaluation
@@ -58,7 +60,7 @@ Optionally, install the hfa1 commands from the Cornelis software bundle.
 rpm -Uvh /tmp/CornelisOPX-OPXS.RHEL*-x86_64.*/repos/OPA_PKGS/RPMS/hfi1-diagtools-sw-0.8-117.x86_64.rpm
 ```
 ## Measure the MPI latency and bandwidth
-We will build and run OpenMPI and the OSU microbenchmarks in our home directory. This can be done as root, but is best done as a normal user. On this system, my home directory is ```/home/cornelis```, and is shared across all the nodes. If this is not shared on your system, then you can copy the required files to the other systems.
+We will build and run OpenMPI and the OSU microbenchmarks in our home directory. This can be done as root, but is best done as a normal user. On this system, my home directory is ```/home/cornelis``` and is shared across all the nodes. If this is not shared on your system, then you can copy the required files to the other systems.
 
 First, download and build OpenMPI.
 ```
@@ -66,7 +68,7 @@ cd /home/cornelis
 wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.1.tar.gz
 tar xf openmpi-4.1.1.tar.gz
 cd openmpi-4.1.1
-./configure --prefix=/home/cornelis/openmpi-4.1.1-psm2 --with-psm2
+./configure --prefix=/home/cornelis/openmpi-4.1.1-psm2 --with-psm2 --enable-mca-no-build=btl-openib
 make all install
 create /home/cornelis/openmpi-4.1.1-psm2/bin/mpivars.sh:
   export MPI_ROOT=/home/cornelis/openmpi-4.1.1-psm2
@@ -74,7 +76,7 @@ create /home/cornelis/openmpi-4.1.1-psm2/bin/mpivars.sh:
   export LD_LIBRARY_PATH=$MPI_ROOT/lib64${LD_LIBRARY_PATH:+:}${LD_LIBRARY_PATH}
   export MANPATH=$MPI_ROOT/share/man:${MANPATH}
 ```
-*Note: ```--prefix=/home/cornelis/openmpi-4.1.1-psm2``` causes ```make install``` to create this directory and install all the components into it.*
+*Note: ```--prefix=/home/cornelis/openmpi-4.1.1-psm2``` causes ```make install``` to create this directory and install the OpenMPI components into it.*
 
 Second, download and build the OSU microbenchmarks.
 ```
@@ -89,15 +91,15 @@ make
 If your home directory is not shared, then copy the required directories to the other node(s):
 ```
 cd /home/cornelis
-scp -a openmpi-* osu-micro-benchmarks-* node02:/home/cornelis
+scp -r openmpi-*-psm2 osu-micro-benchmarks-* node02:/home/cornelis
 ```
 Now, measure the bandwidth and latency between a pair of nodes using OpenMPI and the OSU micro-benchmarks.
 ```
 cd /home/cornelis
 source /home/cornelis/openmpi-4.1.1-psm2/bin/mpivars.sh
 cd osu-micro-benchmarks-5.9/mpi/pt2pt
-mpirun --allow-run-as-root --mca btl ^openib --host node01,node02 ./osu_latency
-mpirun --allow-run-as-root --mca btl ^openib --host node01,node02 ./osu_bw
+mpirun --host node01,node02 ./osu_latency
+mpirun --host node01,node02 ./osu_bw
 ```
 
 ### Systems with multiple HFIs
