@@ -11,11 +11,12 @@ This procedure is suitable for the installation of small clusters and evaluation
 >   - Fix: Use ```mpirun --mca btl ^openib``` or ```configure --enable-mca-no-build=btl-openib```
 > - Is the OpenMPI tree relocatable? Initial look: inconclusive.
 > - ```rpm -Uvh /tmp/CornelisOPX-OPXS.RHEL*-x86_64.*/repos/OPA_PKGS/RPMS/hfi1-diagtools-sw-0.8-117.x86_64.rpm```
-> - Summarize differences between tarball and in-distro installs.
+> - Differences between CornelisOPX and in-distro installs.
 >   - no hfi1 commands
 >   - opa admin commands can only be run by root
 >   - ```memlock``` in ```/etc/security/limits.conf```
 >   - no AIP
+>   - CornelisOPX: On an idle node, there will be 16 open contexts.
 
 ## Prerequisites
 - A cluster of two or more Linux servers running a RHEL-like Linux distro.
