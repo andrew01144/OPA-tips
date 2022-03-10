@@ -1,20 +1,18 @@
-# Setting up an Omni-Path fabric for evaluation
-This document is a cheat-sheet for some Cornelis Omni-Path admin commands and procedures; it does not cover switch management.
-
+# Setting up an Omni-Path fabric for evaluation<br>(CornelisOPX software method)
 This procedure is suitable for the installation of small clusters and evaluation projects. It would need to be adjusted for use in a production environment using a Cluster Management system.
 
-In general, Omni-Path switches can be used in their out-of-box state. Some configuration and firmware updates should be done for a production environment, but are usually unecessary for small evaluation systems. Managing switches will be covered in a separate document.
-
-## Installation
-
-Prerequisites
+## Prerequisites
 - A cluster of two or more Linux servers running a RHEL-like Linux distro.
 - Passwordless ssh from the headnode to all nodes.
 - Omni-Path adapters installed in each node, and cabled to an Omni-Path switch.
+  - If using a pair of nodes, these can be cabled back-to-back, without a switch.
 - The Omni-Path host software bundle (e.g. CornelisOPX-OPXS.RHEL\*-x86_64.\*.tgz ) [has been downloaded](Download.md).
 - Optional/Recommended: pdsh has been installed on the headnode ```yum install pdsh```.
 
-Install the Omni-Path host stack on each node:
+**Omni-Path Switches:** In general, Omni-Path switches can be used in their out-of-box state. Some configuration and firmware updates should be done for a production environment, but are usually unecessary for small evaluation systems. Managing switches will be covered in a separate document.
+
+## Install the host stack
+On each node, install the Omni-Path host stack:
 ```
 cd
 tar xf /tmp/CornelisOPX-OPXS.RHEL*-x86_64.*.tgz
