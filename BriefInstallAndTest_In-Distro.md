@@ -1,33 +1,37 @@
-# Setting up an Omni-Path fabric for evaluation
+# Setting up an Omni-Path fabric for evaluation<br>(in-distro method)
 This procedure is suitable for the installation of small clusters and evaluation projects. It would need to be adjusted for use in a production environment using a Cluster Management system.
 
-**Omni-Path Switches:** In general, Omni-Path switches can be used in their out-of-box state. Some configuration and firmware updates should be done for a production environment, but are usually unecessary for small evaluation systems. Managing switches will be covered in a separate document.
 
 > ## Work in Progress, open questions:
-> - is opa-address-resolution useful for anything?
-> - is reboot required between opa-basic-tools and the other packages?
+> - Host stack packages:
+>   - is a reboot required between opa-basic-tools and the other packages?
+>   - is opa-address-resolution useful for anything?
 > - OMPI warning: "There was an error initializing an OpenFabrics device".
+>   - This warning probably occurs because IB adapters are present in the machines I am using.
 >   - Fix: Use ```mpirun --mca btl ^openib``` or ```configure --enable-mca-no-build=btl-openib```
-> - is the OpenMPI tree relocatable? Initial look: inconclusive.
-> - summarize differences between tarball and in-distro installs.
+> - Is the OpenMPI tree relocatable? Initial look: inconclusive.
+> - ```rpm -Uvh /tmp/CornelisOPX-OPXS.RHEL*-x86_64.*/repos/OPA_PKGS/RPMS/hfi1-diagtools-sw-0.8-117.x86_64.rpm```
+> - Summarize differences between tarball and in-distro installs.
 >   - no hfi1 commands
 >   - opa admin commands can only be run by root
+>   - ```memlock``` in ```/etc/security/limits.conf```
 >   - no AIP
-> - build and run deviation.c?
 
-## Installation
-
-Prerequisites
+## Prerequisites
 - A cluster of two or more Linux servers running a RHEL-like Linux distro.
 - Passwordless ssh from the headnode to all nodes.
 - Omni-Path adapters installed in each node, and cabled to an Omni-Path switch.
-- Optional/Recommended: pdsh has been installed on the headnode ```yum install pdsh```.
+  - If using a pair of nodes, these can be cabled back-to-back, without a switch.
+- Optional/Recommended:
+  - There is a non-root user with a shared home directory.
+  - pdsh has been installed on the headnode ```yum install pdsh```.
 
+**Omni-Path Switches:** In general, Omni-Path switches can be used in their out-of-box state. Some configuration and firmware updates should be done for a production environment, but are usually unecessary for small evaluation systems. Managing switches will be covered in a separate document.
+
+## Install the host stack
 On each node, install the Omni-Path host stack:
 ```
-yum install -y opa-basic-tools
-reboot
-yum intsall -y rdma-core libpsm2 opa-fastfabric opa-address-resolution opa-fm
+yum install -y opa-basic-tools rdma-core libpsm2 opa-fastfabric opa-address-resolution opa-fm
 ```
 At this point, you may want to setup the IP-over-Fabric settings (also known as IPoIB). This is usual, but optional, and not required for the following MPI tests. Do this in the same way as for any other network interface by creating a ```/etc/sysconfig/network-scripts/ifcfg-ib0``` file, typically with a static IP address.
 ```
@@ -54,10 +58,7 @@ Check that the fabric is up and that the correct number of hosts and switches ar
 ```
 opafabricinfo
 ```
-Optionally, install the hfa1 commands from the Cornelis software bundle.
-```
-rpm -Uvh /tmp/CornelisOPX-OPXS.RHEL*-x86_64.*/repos/OPA_PKGS/RPMS/hfi1-diagtools-sw-0.8-117.x86_64.rpm
-```
+
 ## Measure the MPI latency and bandwidth
 We will build and run OpenMPI and the OSU microbenchmarks in our home directory. This can be done as root, but is best done as a normal user. On this system, my home directory is ```/home/cornelis``` and is shared across all the nodes. If this is not shared on your system, then you can copy the required files to the other systems.
 
@@ -100,13 +101,23 @@ cd osu-micro-benchmarks-5.9/mpi/pt2pt
 mpirun --host node01,node02 ./osu_latency
 mpirun --host node01,node02 ./osu_bw
 ```
+Measuring bandwidth and latency is a good health check, and particularly recommended during installation.
+The program ```deviation.c``` will measure the bandwidth and latency of a list of nodes and report any performance outliers.
+```
+wget https://github.com/cornelisnetworks/opa-ff/raw/master/MpiApps/apps/deviation/deviation.c
+source /home/cornelis/openmpi-4.1.1-psm2/bin/mpivars.sh
+mpicc -o deviation deviation.c
+pdsh -w node[01-16] -N -R exec echo %h | sort > /tmp/mpi_hosts
+mpirun --npernode 1 --hostfile /tmp/mpi_hosts ./deviation
+```
+
 
 ### Systems with multiple HFIs
 Application traffic can be assigned or spread across multiple adapters according to rules set by the environment variable ```PSM2_MULTIRAIL```.
 This is a complex topic fully described in the Omni-Path Multirail Application Note (link to be provided).
-For simple testing, it is easiest to measure the performance of one HFI at a time. You can direct PSM2 to use a specifc HFI with the ```HFI_UNIT``` environment variable. Here is the syntax for specifying the environment variable in the mpirun command. ```HFI_UNIT``` numbers from 0 to 3.
+For simple testing, it is easiest to measure the performance of one HFI at a time. You can direct PSM2 to use a specifc HFI with the ```HFI_UNIT``` environment variable. Here is the syntax for specifying the environment variable in OpenMPI's mpirun command. ```HFI_UNIT``` numbers from 0 to 3.
 ```
-mpirun --allow-run-as-root --host node01,node02 -x HFI_UNIT=0 ./osu_bw
+mpirun --host node01,node02 -x HFI_UNIT=0 ./osu_bw
 ```
 
 ## Diagnostics
