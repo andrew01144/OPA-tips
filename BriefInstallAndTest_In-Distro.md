@@ -8,7 +8,7 @@ This procedure is suitable for the installation of small clusters and evaluation
 >   - is opa-address-resolution useful for anything?
 > - OMPI warning: "There was an error initializing an OpenFabrics device".
 >   - This warning probably occurs because IB adapters are present in the machines I am using.
->   - Fix: Use ```mpirun --mca btl ^openib``` or ```configure --enable-mca-no-build=btl-openib```
+>   - Fix: Use ```mpirun --mca btl ^openib``` or ```export OMPI_MCA_btl="^openib"``` or ```configure --enable-mca-no-build=btl-openib```
 > - Is the OpenMPI tree relocatable? Initial look: inconclusive.
 > - ```rpm -Uvh /tmp/CornelisOPX-OPXS.RHEL*-x86_64.*/repos/OPA_PKGS/RPMS/hfi1-diagtools-sw-0.8-117.x86_64.rpm```
 > - Differences between CornelisOPX and in-distro installs.
@@ -61,7 +61,7 @@ opafabricinfo
 ```
 
 ## Measure the MPI latency and bandwidth
-We will build and run OpenMPI and the OSU microbenchmarks in our home directory. This can be done as root, but is best done as a normal user. On this system, my home directory is ```/home/cornelis``` and is shared across all the nodes. If this is not shared on your system, then you can copy the required files to the other systems.
+Build and run OpenMPI and the OSU microbenchmarks in your home directory. This can be done as root, but is best done as a normal user. On this system, the home directory is ```/home/cornelis``` and is shared across all the nodes. If this is not shared on your system, then you can copy the required files to the other systems.
 
 First, download and build OpenMPI.
 ```
@@ -69,7 +69,7 @@ cd /home/cornelis
 wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.1.tar.gz
 tar xf openmpi-4.1.1.tar.gz
 cd openmpi-4.1.1
-./configure --prefix=/home/cornelis/openmpi-4.1.1-psm2 --with-psm2 --enable-mca-no-build=btl-openib
+./configure --prefix=/home/cornelis/openmpi-4.1.1-psm2 --with-psm2
 make all install
 create /home/cornelis/openmpi-4.1.1-psm2/bin/mpivars.sh:
   export MPI_ROOT=/home/cornelis/openmpi-4.1.1-psm2
