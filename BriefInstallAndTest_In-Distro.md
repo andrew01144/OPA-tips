@@ -15,7 +15,8 @@ This procedure is suitable for the installation of small clusters and evaluation
 >   - no hfi1 commands
 >   - opa admin commands can only be run by root
 >   - ```memlock``` in ```/etc/security/limits.conf```
->   - no AIP
+>   - no AIP - Accelerated IP
+>   - no Accelerated RDMA (?)
 >   - CornelisOPX: On an idle node, there will be 16 open contexts.
 
 ## Prerequisites
