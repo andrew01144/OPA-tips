@@ -14,10 +14,11 @@ This procedure is suitable for the installation of small clusters and evaluation
 > - Differences between CornelisOPX and in-distro installs.
 >   - no hfi1 commands
 >   - opa admin commands can only be run by root
->   - ```memlock``` in ```/etc/security/limits.conf```
->   - no AIP - Accelerated IP
->   - no Accelerated RDMA (?)
 >   - CornelisOPX: On an idle node, there will be 16 open contexts.
+>   - ```memlock``` in ```/etc/security/limits.conf``` is not configured.
+>   - AIP - Accelerated IP - is *not* available.
+>   - Accelerated RDMA - should be available in both CornelisOPX and in-distro.
+
 
 ## Prerequisites
 - A cluster of two or more Linux servers running a RHEL-like Linux distro.
