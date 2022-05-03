@@ -16,7 +16,7 @@ This procedure is suitable for the installation of small clusters and evaluation
 >   - opa admin commands can only be run by root
 >   - CornelisOPX: On an idle node, there will be 16 open contexts.
 >   - ```memlock``` in ```/etc/security/limits.conf``` is not configured.
->   - AIP - Accelerated IP - is *not* available.
+>   - AIP - Accelerated IP - available from RHEL 8.4.
 >   - Accelerated RDMA - should be available in both CornelisOPX and in-distro.
 
 
