@@ -67,6 +67,7 @@ Build and run OpenMPI and the OSU microbenchmarks in your home directory. This c
 
 First, download and build OpenMPI.
 ```
+yum install libpsm2-devel
 cd /home/cornelis
 wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.1.tar.gz
 tar xf openmpi-4.1.1.tar.gz
