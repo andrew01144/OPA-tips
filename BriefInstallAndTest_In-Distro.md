@@ -8,7 +8,7 @@ This procedure is suitable for the installation of small clusters and evaluation
 >   - is opa-address-resolution useful for anything?
 > - OMPI warning: "There was an error initializing an OpenFabrics device".
 >   - Fix: Use ```mpirun --mca btl ^openib``` or ```export OMPI_MCA_btl="^openib"```
->     -  ```configure --enable-mca-no-build=btl-openib``` does not fix this.
+>     -  ```configure --enable-mca-no-build=btl-openib``` does not fix this; ```btl-openib``` still appears in ```ompi_info```.
 > - Is the OpenMPI tree relocatable? Initial look: inconclusive.
 > - ```rpm -Uvh /tmp/CornelisOPX-OPXS.RHEL*-x86_64.*/repos/OPA_PKGS/RPMS/hfi1-diagtools-sw-0.8-117.x86_64.rpm```
 > - Differences between CornelisOPX and in-distro installs.
