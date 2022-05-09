@@ -7,8 +7,8 @@ This procedure is suitable for the installation of small clusters and evaluation
 >   - is a reboot required between opa-basic-tools and the other packages?
 >   - is opa-address-resolution useful for anything?
 > - OMPI warning: "There was an error initializing an OpenFabrics device".
->   - This warning probably occurs because IB adapters are present in the machines I am using.
->   - Fix: Use ```mpirun --mca btl ^openib``` or ```export OMPI_MCA_btl="^openib"``` or ```configure --enable-mca-no-build=btl-openib```
+>   - Fix: Use ```mpirun --mca btl ^openib``` or ```export OMPI_MCA_btl="^openib"```
+>     -  ```configure --enable-mca-no-build=btl-openib``` does not fix this.
 > - Is the OpenMPI tree relocatable? Initial look: inconclusive.
 > - ```rpm -Uvh /tmp/CornelisOPX-OPXS.RHEL*-x86_64.*/repos/OPA_PKGS/RPMS/hfi1-diagtools-sw-0.8-117.x86_64.rpm```
 > - Differences between CornelisOPX and in-distro installs.
@@ -77,8 +77,9 @@ make all install
 create /home/cornelis/openmpi-4.1.1-psm2/bin/mpivars.sh:
   export MPI_ROOT=/home/cornelis/openmpi-4.1.1-psm2
   export PATH=$MPI_ROOT/bin:${PATH}
-  export LD_LIBRARY_PATH=$MPI_ROOT/lib64${LD_LIBRARY_PATH:+:}${LD_LIBRARY_PATH}
+  export LD_LIBRARY_PATH=$MPI_ROOT/lib${LD_LIBRARY_PATH:+:}${LD_LIBRARY_PATH}
   export MANPATH=$MPI_ROOT/share/man:${MANPATH}
+  export OMPI_MCA_btl="^openib"
 ```
 *Note: ```--prefix=/home/cornelis/openmpi-4.1.1-psm2``` causes ```make install``` to create this directory and install the OpenMPI components into it.*
 
