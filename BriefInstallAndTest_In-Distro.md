@@ -3,21 +3,24 @@ This procedure is suitable for the installation of small clusters and evaluation
 
 
 > ## Work in Progress, open questions:
-> - Host stack packages:
->   - is a reboot required between opa-basic-tools and the other packages?
->   - is opa-address-resolution useful for anything?
-> - OMPI warning: "There was an error initializing an OpenFabrics device".
->   - Fix: Use ```mpirun --mca btl ^openib``` or ```export OMPI_MCA_btl="^openib"```
->     -  ```configure --enable-mca-no-build=btl-openib``` does not fix this; ```btl-openib``` still appears in ```ompi_info```.
-> - Is the OpenMPI tree relocatable? Initial look: inconclusive.
-> - ```rpm -Uvh /tmp/CornelisOPX-OPXS.RHEL*-x86_64.*/repos/OPA_PKGS/RPMS/hfi1-diagtools-sw-0.8-117.x86_64.rpm```
 > - Differences between CornelisOPX and in-distro installs.
->   - no hfi1 commands, but can be installed from rpms in CornelisOPX.
+>   - no hfi1 commands, but they can be installed from rpms in CornelisOPX.
+>     - ```rpm -Uvh /tmp/CornelisOPX-OPXS.RHEL*-x86_64.*/repos/OPA_PKGS/RPMS/hfi1-diagtools-sw-0.8-117.x86_64.rpm```
 >   - opa admin commands can only be run by root
 >   - CornelisOPX: On an idle node, there will be 16 open contexts.
 >   - ```memlock``` in ```/etc/security/limits.conf``` is not configured.
 >   - AIP - Accelerated IP - available from RHEL 8.4.
 >   - Accelerated RDMA - should be available in both CornelisOPX and in-distro.
+>   
+> - Host stack packages:
+>   - is a reboot required between opa-basic-tools and the other packages?
+>   - is opa-address-resolution useful for anything?
+> - OpenMPI issues:
+>   - OMPI warning: "There was an error initializing an OpenFabrics device".
+>     - Fix: Use ```mpirun --mca btl ^openib``` or ```export OMPI_MCA_btl="^openib"```
+>     -  ```configure --enable-mca-no-build=btl-openib``` does not fix this; ```btl-openib``` still appears in ```ompi_info```.
+>   - Is the OpenMPI tree relocatable? Initial look: inconclusive.
+
 
 
 ## Prerequisites
