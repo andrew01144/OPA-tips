@@ -72,7 +72,7 @@ cd /home/cornelis
 wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.1.tar.gz
 tar xf openmpi-4.1.1.tar.gz
 cd openmpi-4.1.1
-./configure --prefix=/home/cornelis/openmpi-4.1.1-psm2 --with-psm2
+./configure --prefix=/home/cornelis/openmpi-4.1.1-psm2 --enable-orterun-prefix-by-default --with-psm2
 make all install
 create /home/cornelis/openmpi-4.1.1-psm2/bin/mpivars.sh:
   export MPI_ROOT=/home/cornelis/openmpi-4.1.1-psm2
