@@ -18,8 +18,9 @@ This procedure is suitable for the installation of small clusters and evaluation
 > - OpenMPI issues:
 >   - OMPI warning: "There was an error initializing an OpenFabrics device".
 >     - Fix: Use ```mpirun --mca btl ^openib``` or ```export OMPI_MCA_btl="^openib"```
->     -  ```configure --enable-mca-no-build=btl-openib``` does not fix this; ```btl-openib``` still appears in ```ompi_info```.
->     -  Try ```configure --enable-mca-no-build=btl-openib --without-verbs```.
+>     - ```configure --enable-mca-no-build=btl-openib``` does not fix this; ```btl-openib``` still appears in ```ompi_info```.
+>     - Try ```configure --enable-mca-no-build=btl-openib --without-verbs```.
+>     - Also, try --enable-mpirun-prefix-by-default instead of --enable-orterun-prefix-by-default
 >   - Is the OpenMPI tree relocatable? Initial look: inconclusive.
 
 
