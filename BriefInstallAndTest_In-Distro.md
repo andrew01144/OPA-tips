@@ -1,6 +1,16 @@
 # Setting up an Omni-Path fabric for evaluation<br>(in-distro method)
+It is possible to set up an Omni-Path system without downloading and installing any software from Cornelis Networks. Using this method can be more convenient in some situations.
+
 This procedure is suitable for the installation of small clusters and evaluation projects. It would need to be adjusted for use in a production environment using a Cluster Management system.
 
+Cornelis Networks regularly upstreams their code so that it can be realeased with the Linux Distros. This enables you to set up a system using just the packages included in the distro.
+
+| Benefits of using in-distro packages | Benefits of using CornelisOPX software |
+| ------------------------------------ | -------------------------------------- |
+| The Omni-Path software components have been successfully built on your distro/version of choice. | This configuration has be functionally tested, and is supported by, by Cornelis Networks. |
+
+<br>
+<br>
 
 > ## Work in Progress, open questions:
 > - Differences between CornelisOPX and in-distro installs.
@@ -13,15 +23,16 @@ This procedure is suitable for the installation of small clusters and evaluation
 >   - Accelerated RDMA - should be available in both CornelisOPX and in-distro.
 >   
 > - Host stack packages:
->   - is a reboot required between opa-basic-tools and the other packages?
->   - is opa-address-resolution useful for anything?
+>   - is a reboot required between opa-basic-tools and the other packages? Probably not.
+>   - is opa-address-resolution useful for anything? Probably not.
 > - OpenMPI issues:
 >   - OMPI warning: "There was an error initializing an OpenFabrics device".
 >     - Fix: Use ```mpirun --mca btl ^openib``` or ```export OMPI_MCA_btl="^openib"```
 >     - ```configure --enable-mca-no-build=btl-openib --without-verbs``` does not fix this; ```btl-openib``` still appears in ```ompi_info```.
 >   - Is the OpenMPI tree relocatable? Initial look: inconclusive.
 
-
+<br>
+<br>
 
 ## Prerequisites
 - A cluster of two or more Linux servers running a RHEL-like Linux distro.
