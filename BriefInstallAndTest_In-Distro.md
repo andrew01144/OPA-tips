@@ -7,7 +7,7 @@ Cornelis Networks regularly upstreams their code so that it can be realeased wit
 
 | Benefits of using in-distro packages | Benefits of using CornelisOPX software |
 | ------------------------------------ | -------------------------------------- |
-| The Omni-Path software components have been successfully built on your distro/version of choice. | This configuration has be functionally tested, and is supported by, Cornelis Networks. |
+| The Omni-Path software components have been successfully built on your distro/version of choice. | This configuration has been functionally tested, and is supported by, Cornelis Networks. |
 
 <br>
 <br>
