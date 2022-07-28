@@ -16,7 +16,7 @@ Cornelis Networks regularly upstreams their code so that it can be realeased wit
 ## Differences between OPXS and in-distro installations
 ### Features and configuration
 - OPXS: On an idle node, there will be 16 open hfi contexts. This can improve verbs performance, particularly for storage operations. I don't know how to replicate this.
-- OPXS: ```memlock``` in ```/etc/security/limits.conf``` is not configured.
+- OPXS: ```/etc/security/limits.conf``` contains ```* hard memlock unlimited``` ```* soft memlock unlimited```.
 - AIP - Accelerated IP - is available in in-distro from RHEL 8.4.
 - Accelerated RDMA - should be available in both OPXS and in-distro.
 ### Commands
