@@ -5,7 +5,7 @@ This procedure is suitable for the installation of small clusters and evaluation
 
 Cornelis Networks regularly upstreams their code so that it can be realeased with the Linux distros. This enables you to set up a system using just the packages included in the distro.
 
-| Using in-distro packages | Using the CornelisOPXS software bundle |
+| Using the in-distro packages | Using the Cornelis OPXS software bundle |
 | ------------------------------------ | -------------------------------------- |
 | Should be considered for RHEL 8.4 and later.<br>May be easier to install and maintain. | Recommended for RHEL earlier than 8.4.<br>The OPXS software bundle contains some features and capabilities that are not available in the pre-8.4 packages. |
 | Benefits:<br>The Omni-Path software components have been successfully built on your distro/version of choice. | Benefits:<br>This configuration has been functionally tested, and is supported by, Cornelis Networks. |
