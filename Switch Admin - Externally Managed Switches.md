@@ -1,4 +1,7 @@
 # Configuring externally managed switches
+Also known as "unmanaged switches".
+
+
 Externally managed switches are managed in-band, over the fabric. They have no Ethernet or serial connection, no http or ssh access. The switches do have an
 Ethernet/USB socket, but this is not active. All management is done from special commands run on a fabric node. This is primarily ```opaswitchadmin```,
 and is usually run on the cluster’s headnode.
