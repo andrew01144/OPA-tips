@@ -7,3 +7,5 @@ Setting up an Omni-Path fabric for evaluation:
 - Or using the [in-distro opa packages.](BriefInstallAndTest_In-Distro.md)
 
 [Exploring the fabric](FabricExplore.md): How to determine what is connected to what, and test for bad cables.
+[Equivalent Infiniband Commands](IB_vs_OPA_Commands.pdf): Rough equivalents between Infinband and Omni-Path admin commands. 
+
