@@ -1,6 +1,6 @@
 # Omni-Path cheat-sheets
 
-[How to download the CornelisOPX software bundle.](Download.md)
+[How to download the CornelisOPXS software bundle.](Download.md)
 
 Setting up an Omni-Path fabric for evaluation:
 - Either using the [CornelisOPX software bundle.](BriefInstallAndTest.md)
