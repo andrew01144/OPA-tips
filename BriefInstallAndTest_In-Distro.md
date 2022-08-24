@@ -157,8 +157,8 @@ Node-based commands
 
 ```opainfo``` Check status of the local adapter, link and cable.<br>
 ```lspci | grep HFI``` Look for Omni-Path adapters.<br>
-```lspci -d :24f0 -vv | grep LnkSta:``` Check the PCIe connection status. Should be Speed 8GT/s, Width x16.<br>
-```dmidecode | grep -A3 "BIOS Info"``` Check the BIOS version.<br>
+```sudo lspci -d :24f0 -vv | grep LnkSta:``` Check the PCIe connection status. Should be Speed 8GT/s, Width x16.<br>
+```sudo dmidecode | grep -A3 "BIOS Info"``` Check the BIOS version.<br>
 ```hfi1stats -n 1 | grep Open``` Check for open contexts - each MPI rank that uses PSM2 will open a context.<br>
 ```cat /proc/cpuinfo | grep MHz``` Check the frequency of the CPUs.<br>
 ```mpirun -hosts node01,node02 hostname``` Test that passwordless ssh and the MPI infrastructure are working.<br>
