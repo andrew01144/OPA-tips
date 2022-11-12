@@ -46,11 +46,11 @@ You should see something like this:
 0x0011750901de5663;1;FI;cn0279 hfi1_0;0x00117501020e5db7;33;SW;cm1-Leaf05
 ```
 ## Where switches have been named 'leaf' and 'spine'.
-During installation, the NodeDesc of the switches may have been configured to show the role of the switch.
+During installation, the NodeDesc of each switch may have been configured to show its role.
 For example: ```Leaf01```, ```Leaf02```, ```Spine01```, ```Spine02```.
 When this has been done, the links can be grep'ed and sorted quite easily.
 Names maybe different in your fabric, perhaps Leaf/Spine, or Edge/Core; adjust the commands below to match your environment.
-If the switches have not been named, skip to the section below.
+If the switches have not been named in this way, skip to the section below.
 
 ### Switches and FIs
 ```
