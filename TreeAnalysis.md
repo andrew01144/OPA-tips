@@ -91,7 +91,7 @@ The objective is to make two lists: ```guidsLeafs.txt``` and ```guidsSpines.txt`
 ```
 # Method #1: Sort switches by the number of ISLs they have.
 # You can probably spot the leafs and spines from this. Spines will generally have many more ISLs than Leafs have.
-cat allLinksX2.txt.txt | grep 'SW.*SW' | cut -d \; -f 1 | sort | uniq -c | sort
+cat allLinksX2.txt | grep 'SW.*SW' | cut -d \; -f 1 | sort | uniq -c | sort
 # Using Alt-LeftMouse on putty, you can select the column of GUIDs and paste them to a file (or use an editor).
 cat > guidsLeafs.txt  [paste, ^D]
 cat > guidsSpines.txt [paste, ^D]
