@@ -97,6 +97,7 @@ Down                Offline                 None                      # initial 
                                             Not installed             # [Directors] this Spine port goes to an empty leaf slot
                                             Disconnected              # [Directors] ports 17-24 on a 16-port leaf
                     Disabled                SMA disabled              # disabled using opaportconfig -l <lid> -m <port>
+                                            Switch Mgmt               # disabled using ismPortDisable
 		    Polling                 <blank>                   # looking for neighbor
                     Training                <blank>                   # bringing the link up
         <assumed>   Init                    <blank>                   # waiting for SM
