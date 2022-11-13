@@ -1,12 +1,19 @@
 # Omni-Path cheat-sheets
 
-[How to download the CornelisOPXS software bundle.](Download.md)
+## Infiniband to Omni-Path command equivalents
+- Rough [equivalents](IB_vs_OPA_Commands.pdf) between Infinband and Omni-Path admin commands.
+## Installation
+- How to download the [CornelisOPXS software bundle](Download.md).
+- Setting up an Omni-Path fabric for evaluation:
+  - Using the [in-distro opa packages](BriefInstallAndTest_In-Distro.md).
+  - Using the [CornelisOPXS software](BriefInstallAndTest.md) bundle.
+## Managing switches
+- Configuring [Managed Switches](Config_ManagedSwitches.md).
+- Configuring [Unmanaged Switches](Config_UnmanagedSwitches.md).
+## Exploring the fabric
+- [Exploring the fabric](FabricExplore.md): How to determine what is connected to what, and test for bad cables.
+- [Checking a 2-tier fat-tree](TreeAnalysis.md).
+## Commands
+- Download additional [fabric admin commands](https://github.com/andrew01144/OpaAdminScripts).
 
-Setting up an Omni-Path fabric for evaluation:
-- Either using the [in-distro opa packages.](BriefInstallAndTest_In-Distro.md)
-- Or using the [CornelisOPXS software bundle.](BriefInstallAndTest.md)
-
-
-[Exploring the fabric](FabricExplore.md): How to determine what is connected to what, and test for bad cables.<br>
-[Equivalent Infiniband Commands](IB_vs_OPA_Commands.pdf): Rough equivalents between Infinband and Omni-Path admin commands.<br>
 
