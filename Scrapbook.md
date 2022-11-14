@@ -89,20 +89,17 @@ NodeGUID;PortNum;NodeDesc;PortState;PhysState;OfflineDisabledReason;LinkDowned
 ```
 ```
 PortState           PhysState               OfflineDisabledReason
-
-Active              LinkUp                  <blank>
-
 Down                Offline                 None                      # initial port state
-                                            No Loc Media              # no cable in this port
-                                            Not installed             # [Directors] this Spine port goes to an empty leaf slot
-                                            Disconnected              # [Directors] ports 17-24 on a 16-port leaf
-                    Disabled                SMA disabled              # disabled using opaportconfig -l <lid> -m <port>
-                                            Switch Mgmt               # disabled using ismPortDisable
-		    Polling                 <blank>                   # looking for neighbor
-                    Training                <blank>                   # bringing the link up
-        <assumed>   Init                    <blank>                   # waiting for SM
-                    
-		    
+Down                Offline                 No Loc Media              # no cable in this port
+Down                Offline                 Not installed             # [Directors] this Spine port goes to an empty leaf slot
+Down                Offline                 Disconnected              # [Directors] ports 17-24 on a 16-port leaf
+Down                Disabled                SMA disabled              # disabled using opaportconfig -l <lid> -m <port>
+Down                Disabled                Switch Mgmt               # disabled using ismPortDisable
+Down                Polling                 <blank>                   # looking for neighbor
+Down                Training                <blank>                   # bringing the link up
+Init                LinkUp                  <blank>                   # waiting for SM
+Active              LinkUp                  <blank>
+	    
 A bad port might cycle through:
 ;Down;Offline;None;
 ;Down;Polling;;
