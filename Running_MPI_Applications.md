@@ -60,10 +60,12 @@ mpirun -env I_MPI_FABRICS=shm:ofi -env I_MPI_OFI_PROVIDER=opx \
 
 ## Verifying the configuration
 There are a number of ways to verify that you are using the correct network interface.
-- <b>Count the Open Contexts</b>:
-  Run ```hfi1stats -n 1 | grep Open``` on one or all of the compute nodes while the application is running.
-  You should see one open context for each MPI rank. Note that sometimes some contexts are opened at boot time to improve storage performance,
-  so you should record the CtxtsOpen before running the application, then see if this number increases during application execution.
+- <b>Query the number of free contexts</b>:
+  Each PSM2 MPI rank will consume a context on the adapter.
+  Run ```cat /sys/class/infiniband/hfi1_0/nfreectxts``` on one or all of the compute nodes.
+  Record the nfreectxts before running the application, then see if this number decreases during application execution.
+  If the number does not change, then you have not successfully engaged PSM2.
+  For OPX - same behavior?
 - <b>Diagnostic Messages</b>:
   For PSM2, ```export PSM2_IDENTIFY=1```. If you are using the PSM2 library, each MPI rank will print the version of the PSM2 library to STDERR.
   You may need to use the MPI's options (like -x or -genv) to set or propagate this environment variable to the compute nodes.<br>
