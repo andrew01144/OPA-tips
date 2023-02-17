@@ -63,7 +63,7 @@ There are a number of ways to verify that you are using the correct network inte
 - <b>Count the Open Contexts</b>:
   Run ```hfi1stats -n 1 | grep Open``` on one or all of the compute nodes while the application is running.
   You should see one open context for each MPI rank. Note that sometimes some contexts are opened at boot time to improve storage performance,
-  so you should record the CtxtsOpen before running the application, then see if this number increases when the application is run.
+  so you should record the CtxtsOpen before running the application, then see if this number increases during application execution.
 - <b>Diagnostic Messages</b>:
   For PSM2, ```export PSM2_IDENTIFY=1```. If you are using the PSM2 library, each MPI rank will print the version of the PSM2 library to STDERR.
   You may need to use the MPI's options (like -x or -genv) to set or propagate this environment variable to the compute nodes.<br>
