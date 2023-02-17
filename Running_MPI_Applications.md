@@ -32,7 +32,7 @@ Therefore, we will not discuss MVAPICH2 here.
 ### Types of network and their interfaces
 - <b>Cornelis Networks Omni-Path</b>
   - <b>PSM2</b>: This is the original and current interface for the Omni-Path HPC fabric. To run an application on Omni-Path, you will need to configure your MPI to use PSM2.
-  - <b>OPX, OFI</b>: Omni-Path Express (OPX) is a new interface which is a provider for the Open Fabrics Interface (OFI) libfabric library
+  - <b>OFI/OPX</b>: Omni-Path Express (OPX) is a new interface which is a provider for the Open Fabrics Interface (OFI) libfabric library
   from the OpenFabrics Alliance (OFA). It provides higher performance and more capabilities than PSM2 in an industry standard API.
   OPX replaces PSM2. Most current usage of OPX is experimental.
 - <b>Nvidia Infiniband</b>
