@@ -1,6 +1,6 @@
 # Running MPI Applications
 
-To run an application on an HPC network such as Cornelis Omni-Path or Nvidia Infiniband, you will need to tell the MPI library which network type to use.
+To run an application on an HPC network such as Cornelis Networks Omni-Path or Nvidia Infiniband, you will need to tell the MPI library which network type to use.
 This is the subject of this document.
 
 This document uses the term 'network'. In HPC, the high performance network is sometimes called a 'fabric'.
