@@ -3,7 +3,7 @@
 To run an application on an HPC network such as Cornelis Omni-Path or Nvidia Infiniband, you will need to tell the MPI library which network type to use.
 This is the subject of this document.
 
-This document uses the work 'network'; in HPC, the high performance network is sometimes called a 'fabric'.
+This document uses the work 'network'. In HPC, the high performance network is sometimes called a 'fabric'.
 
 Your application will be compiled to run with a particular MPI library.
 Firstly, you need to determine which MPI your application uses because the runtime options for each MPI are different.
@@ -11,7 +11,7 @@ Examples of MPIs are: OpenMPI, IntelMPI, MVAPICH2, PlatformMPI.
 
 Next, you need to tell your MPI library which network to use by specifying the correct options to the ```mpirun``` command.
 Examples of ```mpirun``` options for different MPIs and networks are shown below.
-In reality, many application have their own run scripts. You may need to work out how these scripts work in order find the point at which
+In reality, many applications have their own run scripts. You may need to work out how these scripts work in order find the point at which
 they construct the ```mpirun``` command, because it is here that the options need to be set correctly.
 Furthermore, some run scripts try to simplify this process: the run script may accept an option like ```-fabric PSM2``` to automatically generate
 the correct mpirun options for the selected network.
@@ -34,26 +34,24 @@ Therefore, we will not discuss MVAPICH2 here.
   OPX replaces PSM2. Most application usage of OPX is currently experimental.
 - <b>OpenIB, Verbs, UCX</b>: These are the interfaces for Nvidia/Mellanox Infiniband networks.
 
-## PSM2
-### OpenMPI
+### PSM2/OpenMPI
 ```
 mpirun --mca btl self,vader -mca mtl psm2 -mca pml cm \
     -np ${NPROCS} --npernode ${PPN} --host ${HOSTLIST} ${APP_EXE}
 ```
-### IntelMPI
+### PSM2/IntelMPI
 ```
 mpirun -genv I_MPI_FABRICS=shm:ofi -genv I_MPI_OFI_PROVIDER=psm2 \
     -np ${NPROCS} -ppn ${PPN} -hostlist ${HOSTLIST} ${APP_EXE}
 ```
 		
-## OPX
-### OpenMPI
+### OPX/OpenMPI
 ```
 mpirun --mca btl self,vader -mca mtl ofi -mca pml cm \ ???????
     -x LD_LIBRARY_PATH=${OPX_PATH}:${LD_LIBRARY_PATH} -x FI_PROVIDER=opx \
     -np ${NPROCS} --npernode ${PPN} --host ${HOSTLIST} ${APP_EXE}
 ```
-### IntelMPI
+### OPX/IntelMPI
 ```
 mpirun -env I_MPI_FABRICS=shm:ofi -env I_MPI_OFI_PROVIDER=opx \
     -genv LD_LIBRARY_PATH=${OPX_PATH}:${LD_LIBRARY_PATH} -genv FI_PROVIDER_PATH="" \
