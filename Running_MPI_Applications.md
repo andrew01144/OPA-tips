@@ -12,7 +12,7 @@ Examples of MPIs are: OpenMPI, IntelMPI, MVAPICH2, PlatformMPI.
 Next, you need to tell your MPI library which network to use by specifying the correct options in the ```mpirun``` command.
 Examples of ```mpirun``` options for different MPIs and networks are shown below.
 
-In reality, many applications have their own run scripts. You may need to trace the flow of these scripts in order find the point at which
+Many applications have their own run scripts. You may need to trace the flow of these scripts in order find the point at which
 they execute the ```mpirun``` command, because it is here that the options need to be set.
 Some run scripts may simplify this by accepting options like ```-fabric PSM2``` to automatically generate the correct mpirun options.
 
