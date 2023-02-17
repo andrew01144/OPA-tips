@@ -58,7 +58,18 @@ mpirun -env I_MPI_FABRICS=shm:ofi -env I_MPI_OFI_PROVIDER=opx \
 	  -np ${NPROCS} -ppn ${PPN} -hostlist ${HOSTLIST} ${APP_EXE}
 ```
 
-## To be added
-How do you know that you have been successful? Check that there is one open context per MPI rank (PSM2 same as OPX?). Check bandwidth and latency.
-
-    
+## Verifying the configuration
+There are a number of ways to verify that you are using the correct network interface.
+- <b>Count the Open Contexts</b>:
+  Run ```hfi1stats -n 1 | grep Open``` on one or all of the compute nodes while the application is running.
+  You should see one open context for each MPI rank. Note that sometimes some contexts are opened at boot time to improve storage performance,
+  so you should record the CtxtsOpen before running the application, then see if this number increases when the application is run.
+- <b>Diagnostic Messages</b>:
+  For PSM2, ```export PSM2_IDENTIFY=1```. If you are using the PSM2 library, each MPI rank will print the version of the PSM2 library to STDERR.
+  You may need to use the MPI's options (like -x or -genv) to set or propagate this environment variable to the compute nodes.<br>
+  For OPX - is there an equivalent?
+- <b>Measure the performance</b>:
+  Use your MPI library with the options you have selected to run a simple MPI latency test program like osu_latency.
+  This should show around 1.5us. If you have the wrong configuration, latency will be much higher.
+  Some care should be taken with this because other factors, like the CPU speed governor, may also increase the latency for very short-running programs. 
+      
