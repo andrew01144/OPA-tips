@@ -16,7 +16,7 @@ Many applications have their own run scripts. You may need to trace the flow of 
 they execute the ```mpirun``` command, because it is here that the options need to be set.
 Some run scripts may simplify this by accepting options like ```-fabric PSM2``` to automatically generate the correct mpirun options.
 
-Be aware that some application documentation is written assuming an Nvidia Infiniband network. In these cases, you will need to change the recommended mpirun options.
+Be aware that some application documentation is written assuming an Nvidia Infiniband network. In these cases, you will need to *change* the recommended mpirun options.
 
 Lastly, you may need to provide additional tuning options to make you application perform at its best.
 This will mainly be MPI options (like pinning ranks to cores), but sometimes network options (like message sizes, etc).
