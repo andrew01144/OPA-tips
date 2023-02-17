@@ -46,7 +46,7 @@ mpirun --mca btl self,vader -mca mtl psm2 -mca pml cm \
 ```
 ### Omni-Path/PSM2/IntelMPI
 ```
-mpirun -genv I_MPI_FABRICS=shm:ofi -genv I_MPI_OFI_PROVIDER=psm2 \
+mpirun -genv I_MPI_FABRICS=shm:ofi -genv I_MPI_OFI_PROVIDER=psm2 \  # should these be -env to be consitent with the OPX example?
     -np ${NPROCS} -ppn ${PPN} -hostlist ${HOSTLIST} ${APP_EXE}
 ```
 		
