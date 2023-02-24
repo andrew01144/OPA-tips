@@ -11,26 +11,24 @@ Examples of MPIs are: OpenMPI, IntelMPI, MVAPICH2.
 
 Next, you need to tell your MPI library which network to use by specifying the correct options in the ```mpirun``` command. Key words for network type are:
 - <b>Cornelis Networks Omni-Path</b>
-  - <b>PSM2</b>: This is the original and current interface for the Omni-Path HPC fabric.
-  - <b>OFI/OPX</b>: Omni-Path Express (OPX) is a new interface which uses the Open Fabrics Interface (OFI) libfabric library
-  from the OpenFabrics Alliance (OFA). It provides higher performance and more capabilities than PSM2 in an industry standard API.
-  OPX replaces PSM2. Most current usage of OPX is experimental.
+  - <b>PSM2</b>: This is the original interface which will continue to be supported on the current generation Omni-Path HPC fabric.
+  - <b>OFI/OPX</b>: Omni-Path Express (OPX) is the new interface which uses the Open Fabrics Interface (OFI) libfabric library from the OpenFabrics Alliance (OFA). It is foundational to all future Omni-Path development, providing higher performance and more capabilities than PSM2 in an industry standard API.
 - <b>Nvidia/Mellanox Infiniband</b>
   - <b>OpenIB, Verbs</b>: These are the original, depricated interfaces for Nvidia/Mellanox Infiniband networks.
   - <b>UCX</b>: The current interface for Nvidia/Mellanox Infiniband networks.
 
-Examples of ```mpirun``` options for different MPIs and networks are shown below.
+Examples of the ```mpirun``` options for different MPIs and networks are shown below.
 
 Many applications have their own run scripts. You may need to trace the flow of these scripts in order find the point at which
 they execute the ```mpirun``` command, because it is here that the options need to be set.
 Some run scripts may simplify this by accepting options like ```-fabric PSM2``` to automatically generate the correct mpirun options.
 
-Be aware that some application documentation is written assuming an Nvidia Infiniband network. In these cases, you will need to *change* the recommended mpirun options. Terms like openib, verbs and ucx refer to InfiniBand and should not be used in an Omni-Path environment.
+Be aware that some application documentation is written assuming an Nvidia Infiniband network. In these cases, you will need to *change* the recommended mpirun options. Terms like openib, verbs and ucx refer to Infiniband and should not be used in an Omni-Path environment.
 
 Lastly, you may need to provide additional tuning options to make you application perform at its best.
 This will mainly be MPI options (like pinning ranks to cores), but sometimes network options (like message sizes, etc).
 
-## Command line options for Omni-Path networks.
+## Command line options for Omni-Path networks
 
 
 ### Omni-Path/PSM2/OpenMPI
@@ -82,7 +80,7 @@ OpenMPI is the primary open source MPI library. It may be provided pre-built wit
 
 <b>OpenMPI with Omni-Path Express</b>: Omni-Path Express (OPX) has a different structure from PSM2, and includes an extra layer. To use OPX, you tell OpenMPI to use the Open Fabrics Interfaces (OFI) library ```--mca mtl ofi```. Additionally, you tell the OFI library to use the *OPX provider* to access the network ```-x FI_PROVIDER=opx```.
 
-<b>Building OpenMPI</b>: This examples builds OpenMPI with support for both PSM2 and OPX.
+<b>Building OpenMPI</b>: This example builds OpenMPI with support for both PSM2 and OPX.
 ```
 ./configure CC=gcc --prefix=/path/to/libfabric-1.16.1-installed \
     --enable-psm2=yes --enable-opx=yes --enable-psm3=no --enable-verbs=no \
@@ -92,9 +90,9 @@ OpenMPI is the primary open source MPI library. It may be provided pre-built wit
 ### IntelMPI
 IntelMPI is the primary commercially supported MPI library and is bundled with many HPC applications. It normally uses the Open Fabrics Interfaces (OFI) library from the OpenFabrics Alliance, so to select a particular network, you specify the *provider* for the OFI library to use.
 
-<b>IntelMPI with PSM2</b>: ```-genv I_MPI_FABRICS=shm:ofi``` tells IntelMPI to use the OFI library. ```-genv I_MPI_OFI_PROVIDER=psm2``` tells the OFI library to use the psm2 provider to access the network. The PSM2 library is not an OFI provider, so we use a thin library (sometimes called a *shim*) to make the PSM2 library appear as a *provider* to the OFI library.
+<b>IntelMPI with PSM2</b>: ```-genv I_MPI_FABRICS=shm:ofi``` tells IntelMPI to use the OFI library. ```-genv I_MPI_OFI_PROVIDER=psm2``` tells the OFI library to use the psm2 provider to access the network. Note: The PSM2 library is not a native OFI provider but can be invoked as a pseudo-provider under the OFI libfabrics layer.
 
-<b>IntelMPI with OPX</b>: ```-genv I_MPI_FABRICS=shm:ofi``` tells IntelMPI to use the OFI library. ```-genv I_MPI_OFI_PROVIDER=opx``` tells the OFI library to use the opx provider to access the network. The OPX provider is a true OFI provider, so no shims are required in this usage.
+<b>IntelMPI with OPX</b>: ```-genv I_MPI_FABRICS=shm:ofi``` tells IntelMPI to use the OFI library. ```-genv I_MPI_OFI_PROVIDER=opx``` tells the OFI library to use the opx provider to access the network.
 
 ### MVAPICH2
 The MVAPICH2 library is built for a particular network type and so does not have runtime options to select the network.
