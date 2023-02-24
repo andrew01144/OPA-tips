@@ -14,6 +14,7 @@
 - [Exploring the fabric](FabricExplore.md): How to determine what is connected to what, and test for bad cables.
 - [Checking a 2-tier fat-tree](TreeAnalysis.md).
 ## Commands
+- [Running MPI programs](Running_MPI_Applications.md): How to set ```mpirun``` options to invoke the correct network connections.
 - Download additional [fabric admin commands](https://github.com/andrew01144/OpaAdminScripts).
 
 
