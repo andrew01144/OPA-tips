@@ -82,6 +82,13 @@ OpenMPI is the primary open source MPI library. It may be provided pre-built wit
 
 <b>OpenMPI with Omni-Path Express</b>: Omni-Path Express (OPX) has a different structure from PSM2, and includes an extra layer. To use OPX, you tell OpenMPI to use the Open Fabrics Interfaces (OFI) library ```--mca mtl ofi```. Additionally, you tell the OFI library to use the *OPX provider* to access the network ```-x FI_PROVIDER=opx```.
 
+<b>Building OpenMPI</b>: This examples builds OpenMPI with support for both PSM2 and OPX.
+```
+./configure CC=gcc --prefix=/path/to/libfabric-1.16.1-installed \
+    --enable-psm2=yes --enable-opx=yes --enable-psm3=no --enable-verbs=no \
+    --enable-sockets=no --enable-tcp=no --enable-udp=no --enable-efa=no --enable-rxm=no --enable-rxd=no
+```
+
 ### IntelMPI
 IntelMPI is the primary commercially supported MPI library and is bundled with many HPC applications. It normally uses the Open Fabrics Interfaces (OFI) library from the OpenFabrics Alliance, so to select a particular network, you specify the *provider* for the OFI library to use.
 
