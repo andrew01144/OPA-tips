@@ -7,7 +7,13 @@ This stuff does not have a home yet.
 - How to use taskset and hwloc-ls (yum install hwloc)
 - How to see core usage: ps -A -o psr,comm | grep <app name> | sort -n
 ---
-	
+### Instalation stuff
+- ```export OPAL_PREFIX=$MPI_ROOT``` is really useful, allows relocation of OpenMPI tree.
+- Allow opa commands to be executed by non-root, an option provided by ./INSTALL
+  - ```chmod 666 /dev/infiniband/umad*```
+  - This is set by a udev rule:  ```/etc/udev/rules.d/05-opa.rules```: ```KERNEL=="umad*", NAME="infiniband/%k", MODE="0666"```
+  - Udev is setup by rpm install if a certain env var is set.
+---
 ### Running IMB and IntelMPI
 ```
 source /somewhere/intel-cluster-runtime/2019.6/mpi/intel64/bin/mpivars.sh
