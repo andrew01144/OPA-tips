@@ -167,6 +167,12 @@ For example, this one-liner shows all links in the fabric with LinkQualityIndica
 ```
 opaextractperf | cut -d \; -f 1,2,3,24 | grep -v ';5$' | sort -t \; -k 4n
 ```
+We can improve this by including any downgraded links.<br>
+Explanation: Exclude good links (TxWidth:4, RxWidth:4, LinkQual:5), and exclude the internal port 0 of the switches.
+```
+opaextractperf -Qq | cut -d \; -f 1,3,5,6,24 | grep -Ev '(;4;4;5$|;0;.;.;.$)' | sort -t \; -k 5n
+```
+
 
 
 ### Example: List all switch ports that appear to be in a bad state.
