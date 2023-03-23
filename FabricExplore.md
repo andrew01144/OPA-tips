@@ -156,21 +156,21 @@ Consider:
 
 ### Example: Report the LinkQualityIndicator of every active port in the fabric.
 ```
-opaextractperf | cut -d \; -f 1,2,3,24
+opaextracterror -Qq | cut -d \; -f 1,3,7
 ```
-Look inside the ```opaextractperf``` script.
+Look inside the ```opaextracterror``` script.
 You will see that it runs ```opareport``` with xml output ```-x```, then uses ```opaxmlextract``` to select particular xml tag values to print.
 Many custom queries can be achieved by using the various the ```opaextract*``` scripts supplied,
 along with ```grep```/```sed```/```cut```/```sort```, or even ```awk``` and ```perl```, for filtering and formatting.
 
-For example, this one-liner shows all links in the fabric with LinkQualityIndicator less than 5, and sorts by quality.
+For example, this one-liner shows all links in the fabric with LinkQualityIndicator less than 5, and sorts by quality (5 is the maximum value of LinkQualityIndicator).
 ```
-opaextractperf | cut -d \; -f 1,2,3,24 | grep -v ';5$' | sort -t \; -k 4n
+opaextracterror -Qq | cut -d \; -f 1,3,7 | grep -v ';5$' | sort -t \; -k 3n
 ```
-We can improve this by including any downgraded links.<br>
+We can improve this by including any downgraded links. Downgraded links will have a width less than 4.<br>
 Explanation: Exclude good links (TxWidth:4, RxWidth:4, LinkQual:5), and exclude the internal port 0 of the switches.
 ```
-opaextractperf -Qq | cut -d \; -f 1,3,5,6,24 | grep -Ev '(;4;4;5$|;0;.;.;.$)' | sort -t \; -k 5n
+opaextracterror -Qq | cut -d \; -f 1,3,5,6,7 | grep -Ev '(;4;4;5|;0;.;.;.)$' | sort -t \; -k 5n
 ```
 
 
