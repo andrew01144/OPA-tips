@@ -20,7 +20,7 @@ Cornelis Networks regularly upstreams their code so that it can be realeased wit
 - AIP - Accelerated IP - is available in in-distro from RHEL 8.4.
 - Accelerated RDMA - should be available in both OPXS and in-distro.
 ### Commands
-- opa admin commands can only be run by root
+- opa admin commands can only be run by root. To enable non-root users, create a udev rule to ```chmod 666 /dev/infiniband/umad*```.
 - The following commands are not included in the in-distro Omni-Path packages.
   - hfi1 commands ```hfi1_control``` ```hfi1_eprom``` ```hfi1_pkt_send``` ```hfi1_pkt_test``` ```hfi1stats```
     -  These can be installed from rpms in OPXS. ```rpm -Uvh /tmp/CornelisOPX-OPXS.RHEL*-x86_64.*/repos/OPA_PKGS/RPMS/hfi1-diagtools-sw-0.8-117.x86_64.rpm```
