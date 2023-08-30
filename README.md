@@ -7,6 +7,7 @@
 - Setting up an Omni-Path fabric for evaluation:
   - Using the [in-distro opa packages](BriefInstallAndTest_In-Distro.md).
   - Using the [CornelisOPXS software](BriefInstallAndTest.md) bundle.
+- Optional: [Install and setup the OPX provider](OPX_AppNote.md).
 ## Managing switches
 - Configuring [Managed Switches](Config_ManagedSwitches.md).
 - Configuring [Unmanaged Switches](Config_UnmanagedSwitches.md).
