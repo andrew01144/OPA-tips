@@ -6,7 +6,8 @@ This procedure is suitable for the installation of small clusters and evaluation
 - Passwordless ssh from the headnode to all nodes.
 - Omni-Path adapters installed in each node, and cabled to an Omni-Path switch.
   - If using a pair of nodes, these can be cabled back-to-back, without a switch.
-- The Omni-Path host software bundle (e.g. CornelisOPX-OPXS.RHEL\*-x86_64.\*.tgz ) [has been downloaded](Download.md).
+- The Omni-Path host software bundle (e.g. CornelisOPX-OPXS.RHEL\*-x86_64.\*.tgz)
+  - How to [download](Download.md) the Cornelis software bundle.
 - Optional/Recommended: pdsh has been installed on the headnode ```yum install pdsh```.
 
 **Omni-Path Switches:** In general, Omni-Path switches can be used in their out-of-box state. Some configuration and firmware updates should be done for a production environment, but are usually unecessary for small evaluation systems. Managing switches will be covered in a separate document.
