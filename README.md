@@ -1,7 +1,7 @@
 # Omni-Path cheat-sheets
 
 ## Infiniband to Omni-Path command equivalents
-- [Rough equivalents between Infinband and Omni-Path admin commands.](IB_vs_OPA_Commands.pdf)
+- [Rough equivalents between Infinband and Omni-Path admin commands.](InDistro-vs-Bundle.md)
 ## Installation
 - Setting up an Omni-Path fabric for evaluation:
   - [Choosing between in-distro and the Cornelis bundle methods.](IB_vs_OPA_Commands.pdf)
