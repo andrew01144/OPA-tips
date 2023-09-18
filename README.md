@@ -7,7 +7,7 @@
   - [Choosing between in-distro and the Cornelis bundle methods.](InDistro-vs-Bundle.md)
   - [Using the in-distro opa packages.](BriefInstallAndTest_In-Distro.md)
   - [Using the CornelisOPXS software bundle.](BriefInstallAndTest.md)
-- Optional: [Install and setup the OPX provider.](OPX_AppNote.md)
+  - Optional: [Install and setup the OPX provider.](OPX_AppNote.md)
 ## Managing switches
 - [Configuring Managed Switches.](Config_ManagedSwitches.md)
 - [Configuring Unmanaged Switches.](Config_UnmanagedSwitches.md)
