@@ -102,6 +102,10 @@ cd osu-micro-benchmarks-5.9/mpi/pt2pt
 mpirun --host node01,node02 ./osu_latency
 mpirun --host node01,node02 ./osu_bw
 ```
+If the full set of OpenMPI options is required, use this command line:
+```
+mpirun --mca btl self,vader --mca mtl psm2 --mca pml cm -np 2 --npernode 1 --host node01,node02 ./osu_latency
+```
 Measuring bandwidth and latency is a good health check, and particularly recommended during installation.
 The program ```deviation.c``` will measure the bandwidth and latency of a list of nodes and report any performance outliers.
 ```
@@ -128,7 +132,7 @@ Node-based commands
 ```lspci | grep HFI``` Look for Omni-Path adapters.<br>
 ```sudo lspci -d :24f0 -vv | grep LnkSta:``` Check the PCIe connection status. Should be Speed 8GT/s, Width x16.<br>
 ```sudo dmidecode | grep -A3 "BIOS Info"``` Check the BIOS version.<br>
-```hfi1stats -n 1 | grep Open``` Check for open contexts - each MPI rank that uses PSM2 will open a context.<br>
+```cat /sys/class/infiniband/hfi1_0/nfreectxts``` Check that each running PSM2 MPI rank consumes a context.<br>
 ```cat /proc/cpuinfo | grep MHz``` Check the frequency of the CPUs.<br>
 ```mpirun -hosts node01,node02 hostname``` Test that passwordless ssh and the MPI infrastructure are working.<br>
 
