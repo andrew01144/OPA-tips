@@ -28,7 +28,6 @@ Do this in the same way as for any other network interface by editing a ```netpl
 ```
 network:
   version: 2
-  renderer: networkd
   ethernets:
     ib0:
       addresses:
