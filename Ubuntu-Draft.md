@@ -124,6 +124,7 @@ Node-based commands
 ```lspci | grep HFI``` Look for Omni-Path adapters.<br>
 ```sudo lspci -d :24f0 -vv | grep LnkSta:``` Check the PCIe connection status. Should be Speed 8GT/s, Width x16.<br>
 ```sudo dmidecode | grep -A3 "BIOS Info"``` Check the BIOS version.<br>
+```apt list --installed | grep -E 'opa|psm2'``` List packages installed and their versions.<br>
 ```cat /sys/class/infiniband/hfi1_0/nfreectxts``` Check that each running PSM2 MPI rank consumes a context.<br>
 ```cat /proc/cpuinfo | grep MHz``` Check the frequency of the CPUs.<br>
 ```mpirun -hosts node01,node02 hostname``` Test that passwordless ssh and the MPI infrastructure are working.<br>
