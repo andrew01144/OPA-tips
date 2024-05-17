@@ -16,8 +16,6 @@ This procedure is suitable for the installation of small clusters and evaluation
 
 ## Install the host stack
 On each node, install the Omni-Path host stack:<br>
-*Use ```apt search libpsm2``` to determine the extact name of the psm2 package in your release. For instance, it may be libpsm2 or libpsm2-2*
-
 ```
 export OPA_UDEV_RULES=1 # Allows non-root users to execute opa admin commands
 sudo apt install -y opa-basic-tools libpsm2-2 opa-fastfabric opa-fm
