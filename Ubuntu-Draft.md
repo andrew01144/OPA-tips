@@ -19,7 +19,7 @@ On each node, install the Omni-Path host stack:<br>
 *Use ```apt search libpsm2``` to determine the extact name of the psm2 package in your release. For instance, it may be libpsm2 or libpsm2-2*
 
 ```
-export XXXXX=XXXXX # To enable non-root users to execute opa admin commands
+export OPA_UDEV_RULES=1 # Allows non-root users to execute opa admin commands
 sudo apt install -y opa-basic-tools libpsm2-2 opa-fastfabric opa-fm
 ```
 At this point, you may want to setup an IP-over-Fabric interface (also known as IPoIB). This is usual, but optional, and not required for the following MPI tests.
