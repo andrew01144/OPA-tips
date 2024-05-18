@@ -24,6 +24,7 @@ At this point, you may want to setup an IP-over-Fabric interface (also known as 
 Do this in the same way as for any other network interface by editing a ```netplan``` file, such as ```/etc/netplan/99_config.yaml```, typically using a static IP address.<br>
 *Do I need to run ```sudo netplan apply```, or will the reboot take care of that?*
 ```
+# /etc/netplan/99_config.yaml or similar file
 network:
   version: 2
   ethernets:
