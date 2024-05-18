@@ -37,7 +37,7 @@ reboot
 ```
 Check that the Omni-Path adapters are named in the the traditional way (such as hfi1_0), and not the *predictable* way (such as opap129s). The names can be seen by running ```ls /sys/class/infiniband```.
 To configure the traditional name, edit or create the file ```/lib/udev/rules.d/60-rdma-persistent-naming.rules```, and add the line ```ACTION=="add", SUBSYSTEM=="infiniband", PROGRAM="rdma_rename %k NAME_KERNEL"```.
-Then ```reboot```, or maybe reload the module with ```modprobe hfi1``` (*needs testing*).
+Then ```reboot```, or maybe reload the module with ```modprobe -r hfi1; modprobe hfi1``` (*needs testing*).
 
 On the headnode, start the Fabric Manager. This assumes there is no SM/FM running on the switch.
 ```
