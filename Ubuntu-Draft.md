@@ -10,7 +10,7 @@ This procedure is suitable for the installation of small clusters and evaluation
   - If using a pair of nodes, these can be cabled back-to-back, without a switch.
 - Optional/Recommended:
   - There is a non-root user with a shared home directory.
-  - pdsh has been installed on the headnode ```sudo apt install pdsh```.
+  - Install the following packages ```sudo apt install -y build-essential wget pdsh```.
 
 **Omni-Path Switches:** In general, Omni-Path switches can be used in their out-of-box state. Some configuration and firmware updates should be done for a production environment, but are usually unecessary for small evaluation systems. Managing switches will be covered in a separate document.
 
