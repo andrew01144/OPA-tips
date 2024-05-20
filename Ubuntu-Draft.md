@@ -18,7 +18,9 @@ This procedure is suitable for the installation of small clusters and evaluation
 > - Replicate configurations that ./INSTALL applies, but I don't have a list of what they are. Probably best not to do this automatically (as ./INSTALL does); simply describe the steps required to implement them. They inlcude:
 >   - Optionally allow non-root users to run opa admin commands. Should be handled by export OPA_UDEV_RULES=1 below.
 >   - Add memlock lines to /etc/security/limits.conf
->   - Reserve some contexts (16?) for I/O - I don't know how to do that.
+>     - Description in limits.conf is *User space Infiniband verbs require memlock permissions. If desired you can limit these permissions to the users permitted to use OPA and/or reduce the limits.  Keep in mind this limit is per user (not per process)*.
+>     - When do you need user space verbs? Maybe for Lustre/BeeGFS/GPFS?
+>   - Reserve some contexts (16?) for I/O - I don't know how to do that, or when that is needed.
 >   - Anything else?
 
 ## Install the host stack
