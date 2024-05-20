@@ -14,6 +14,13 @@ This procedure is suitable for the installation of small clusters and evaluation
 
 **Omni-Path Switches:** In general, Omni-Path switches can be used in their out-of-box state. Some configuration and firmware updates should be done for a production environment, but are usually unecessary for small evaluation systems. Managing switches will be covered in a separate document.
 
+> ## Unknowns
+> - Replicate configurations that ./INSTALL applies, but I don't have a list of what they are. Probably best not to do this automatically (as ./INSTALL does); simply describe the steps required to implement them. They inlcude:
+>   - Optionally allow non-root users to run opa admin commands. Should be handled by export OPA_UDEV_RULES=1 below.
+>   - Add memlock lines to /etc/security/limits.conf
+>   - Reserve some contexts (16?) for I/O - I don't know how to do that.
+>   - Anything else?
+
 ## Install the host stack
 On each node, install the Omni-Path host stack:<br>
 ```
