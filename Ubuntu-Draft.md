@@ -26,7 +26,6 @@ This procedure is suitable for the installation of small clusters and evaluation
 ## Install the host stack
 On each node, install the Omni-Path host stack:<br>
 ```
-export OPA_UDEV_RULES=1 # Allows non-root users to execute opa admin commands
 sudo apt install -y opa-basic-tools libpsm2-2 opa-fastfabric opa-fm
 ```
 At this point, you may want to setup an IP-over-Fabric interface (also known as IPoIB). This is usual, but optional, and not required for the following MPI tests.
@@ -50,8 +49,8 @@ Then ```reboot```, or maybe reload the module with ```modprobe -r hfi1; modprobe
 
 On the headnode, start the Fabric Manager. This assumes there is no SM/FM running on the switch.
 ```
-sudo systemctl enable opafm
-sudo systemctl start opafm
+sudo systemctl enable opa-fm
+sudo systemctl start opa-fm
 ```
 Check that the fabric is up and that the correct number of hosts and switches are present.
 ```
